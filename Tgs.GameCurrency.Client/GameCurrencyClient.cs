@@ -22,7 +22,7 @@ namespace Tgs.GameCurrency.Client
 		public GameCurrencyClient(HttpClient httpClient)
 		  => _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
 
-		public async ValueTask<decimal> GetExchangeRateFundIn(
+		public async ValueTask<decimal> GetExchangeRateFundInAsync(
 			string gameProviderCode,
 			string currencyCode,
 			decimal amount,
@@ -52,7 +52,7 @@ namespace Tgs.GameCurrency.Client
 			return decimal.Parse(contentJson);
 		}
 
-		public async ValueTask<decimal> GetExchangeRateFundOut(
+		public async ValueTask<decimal> GetExchangeRateFundOutAsync(
 			string gameProviderCode,
 			string currencyCode,
 			decimal amount,

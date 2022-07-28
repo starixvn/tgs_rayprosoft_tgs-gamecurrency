@@ -40,7 +40,7 @@ public class GameCurrencyClientUnitTest
 
 		var sut = new GameCurrencyClient(httpClient);
 
-		var actual = await sut.GetExchangeRateFundIn(
+		var actual = await sut.GetExchangeRateFundInAsync(
 			gameProviderCode,
 			currencyCode,
 			amount).ConfigureAwait(false);
@@ -63,7 +63,7 @@ public class GameCurrencyClientUnitTest
 
 		var sut = new GameCurrencyClient(httpClient);
 
-		var actual = await sut.GetExchangeRateFundIn(
+		var actual = await sut.GetExchangeRateFundInAsync(
 			gameProviderCode,
 			currencyCode,
 			amount).ConfigureAwait(false);
@@ -103,7 +103,7 @@ public class GameCurrencyClientUnitTest
 
 		var sut = new GameCurrencyClient(httpClient);
 
-		var actual = await sut.GetExchangeRateFundOut(
+		var actual = await sut.GetExchangeRateFundOutAsync(
 			gameProviderCode,
 			currencyCode,
 			amount).ConfigureAwait(false);
@@ -126,7 +126,7 @@ public class GameCurrencyClientUnitTest
 
 		var sut = new GameCurrencyClient(httpClient);
 
-		var actual = await sut.GetExchangeRateFundOut(
+		var actual = await sut.GetExchangeRateFundOutAsync(
 			gameProviderCode,
 			currencyCode,
 			amount).ConfigureAwait(false);
