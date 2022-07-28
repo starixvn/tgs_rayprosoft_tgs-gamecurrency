@@ -10,6 +10,7 @@ ARG BuildConfiguration=Release
 RUN --mount=type=secret,id=nuget,dst=/pat cp /pat ~/.nuget/NuGet/NuGet.Config
 RUN dotnet nuget remove source 'Microsoft Visual Studio Offline Packages' || true
 WORKDIR /src
+COPY ["NuGet.config", "."]
 COPY ["Tgs.GameCurrency/Tgs.GameCurrency.csproj", "Tgs.GameCurrency/"]
 RUN dotnet restore "Tgs.GameCurrency/Tgs.GameCurrency.csproj"
 COPY . .
