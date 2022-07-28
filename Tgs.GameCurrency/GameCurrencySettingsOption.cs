@@ -1,5 +1,4 @@
-﻿using Tgs.GameCurrency;
-namespace Tgs.GameCurrency;
+﻿namespace Tgs.GameCurrency;
 
 public class GameCurrencySettingsOption
 {

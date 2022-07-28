@@ -39,7 +39,6 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 builder.Services
 	.AddOptions<GameCurrencySettingsOption>()
 	.Configure((options) => builder.Configuration.GetSection("GameCurrencySettings").Bind(options));
@@ -85,12 +84,10 @@ builder.Services
 
 builder.Services.AddHealthChecks();
 
-
 var app = builder.Build();
 
 _ = app.UseSwagger();
 _ = app.UseSwaggerUI();
-
 
 app.UseAuthorization();
 

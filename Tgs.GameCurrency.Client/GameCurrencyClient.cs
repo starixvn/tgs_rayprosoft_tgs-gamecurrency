@@ -51,6 +51,7 @@ namespace Tgs.GameCurrency.Client
 
 			return decimal.Parse(contentJson);
 		}
+
 		public async ValueTask<decimal> GetExchangeRateFundOut(
 			string gameProviderCode,
 			string currencyCode,

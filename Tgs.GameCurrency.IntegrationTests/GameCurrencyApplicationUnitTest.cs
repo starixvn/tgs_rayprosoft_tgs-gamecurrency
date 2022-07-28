@@ -13,7 +13,7 @@ internal class GameCurrencyApplicationUnitTest : WebApplicationFactory<Program>
 	}
 
 	protected override void ConfigureWebHost(IWebHostBuilder builder)
-	{		
+	{
 		_webHostConfigure?.Invoke(builder);
 	}
 }

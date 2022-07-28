@@ -7,13 +7,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "方案項目", "方案項�
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		CodeMaid.config = CodeMaid.config
+		NuGet.config = NuGet.config
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.GameCurrency", "Tgs.GameCurrency\Tgs.GameCurrency.csproj", "{DED39645-6855-4563-8FCA-D36B2D8E384D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tgs.GameCurrency.Client", "Tgs.GameCurrency.Client\Tgs.GameCurrency.Client.csproj", "{73C14E6E-24A9-4A74-957B-0499EDBEFCD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.GameCurrency.Client", "Tgs.GameCurrency.Client\Tgs.GameCurrency.Client.csproj", "{73C14E6E-24A9-4A74-957B-0499EDBEFCD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tgs.GameCurrency.IntegrationTests", "Tgs.GameCurrency.IntegrationTests\Tgs.GameCurrency.IntegrationTests.csproj", "{123C7AFE-F14E-466E-98DE-EC0CB1333D47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.GameCurrency.IntegrationTests", "Tgs.GameCurrency.IntegrationTests\Tgs.GameCurrency.IntegrationTests.csproj", "{123C7AFE-F14E-466E-98DE-EC0CB1333D47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Tgs.GameCurrency.Client;
 
 namespace Tgs.GameCurrency.Client
 {
