@@ -6,15 +6,17 @@ metadata:
 data:
   appsettings.json: |
     {
-      "GameCurrencySettings": {
-        "GameProviderExchangeRates": [
-          {
-            "GameProviderCode": "AWC_PGS",
-            "CurrencyCode": "IDR",
-            "GameProviderCurrencyCode": "IDR",
-            "ExchangeRate": 1000
-          }]
-        }
+      "GameCurrencySettings": 
+      {
+        "GameProviderExchangeRates": 
+          [
+            {
+              "GameProviderCode": "AWC_PGS",
+              "CurrencyCode": "IDR",
+              "GameProviderCurrencyCode": "IDR",
+              "ExchangeRate": 1000
+            }
+          ]
       }
     }
   monitor.settings.json: |
