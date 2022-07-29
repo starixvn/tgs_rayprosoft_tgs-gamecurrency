@@ -6,10 +6,8 @@ metadata:
 data:
   appsettings.json: |
     {
-      "GameCurrencySettings": 
-      {
-        "GameProviderExchangeRates": 
-          [
+      "GameCurrencySettings": {
+        "GameProviderExchangeRates": [
             {
               "GameProviderCode": "AWC_PGS",
               "CurrencyCode": "IDR",
