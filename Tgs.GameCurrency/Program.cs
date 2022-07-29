@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Instrumentation.AspNetCore;
@@ -30,7 +31,11 @@ builder.Logging
 
 builder.Services
 	.AddRouting(options => options.LowercaseUrls = true)
-	.AddControllers()
+	.AddControllers(options =>
+	{
+		options.Filters.Add(new ProducesAttribute("application/json"));
+		options.Filters.Add(new ConsumesAttribute("application/json"));
+	})
 	.AddJsonOptions(options =>
 	{
 		options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -41,7 +46,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services
 	.AddOptions<GameCurrencySettingsOption>()
-	.Configure((options) => builder.Configuration.GetSection("GameCurrencySettings").Bind(options));
+	.Configure((options) => builder.Configuration.GetSection("GameCurrencySettings").Bind(options))
+	.Services
+	.AddSingleton<IGameProviderExchangeRateService, GameProviderExchangeRateService>();
 
 builder.Services
 	.AddSingleton<IConfigureOptions<OtlpExporterOptions>>(

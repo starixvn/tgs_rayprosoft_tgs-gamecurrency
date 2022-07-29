@@ -1,8 +1,6 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Mime;
-using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Web;
 
 namespace Tgs.GameCurrency.Client
 {
@@ -22,26 +20,22 @@ namespace Tgs.GameCurrency.Client
 		public GameCurrencyClient(HttpClient httpClient)
 		  => _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
 
-		public async ValueTask<decimal> GetExchangeRateFundInAsync(
+		public async ValueTask<ExchangeRateBalanceResultViewModel> GetExchangeRateBalanceAsync(
 			string gameProviderCode,
 			string currencyCode,
-			decimal amount,
+			decimal balance,
 			CancellationToken cancellationToken = default)
 		{
-			var request = new
-			{
-				gameProviderCode,
-				currencyCode,
-				amount
-			};
+			var query = HttpUtility.ParseQueryString(string.Empty);
+			query["gameProviderCode"] = gameProviderCode;
+			query["currencyCode"] = currencyCode;
+			query["balance"] = balance.ToString();
 
-			var content = new StringContent(JsonSerializer.Serialize(request, _SerializerOptions), encoding: Encoding.UTF8);
-			content.Headers.ContentType = MediaTypeHeaderValue.Parse(MediaTypeNames.Application.Json);
+			var requestUri = $"exchangerate/balance?{query}";
 
 			var response = await _httpClient
-				.PostAsync(
-				   requestUri: "exchangerate/fund-in",
-				   content: content,
+				.GetAsync(
+				   requestUri: requestUri,
 				   cancellationToken: cancellationToken)
 			   .ConfigureAwait(false);
 
@@ -49,29 +43,25 @@ namespace Tgs.GameCurrency.Client
 
 			var contentJson = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-			return decimal.Parse(contentJson);
+			return JsonSerializer.Deserialize<ExchangeRateBalanceResultViewModel>(contentJson, _SerializerOptions)!;
 		}
 
-		public async ValueTask<decimal> GetExchangeRateFundOutAsync(
+		public async ValueTask<ExchangeRateFundResultViewModel> GetExchangeRateFundInAsync(
 			string gameProviderCode,
 			string currencyCode,
 			decimal amount,
 			CancellationToken cancellationToken = default)
 		{
-			var request = new
-			{
-				gameProviderCode,
-				currencyCode,
-				amount
-			};
+			var query = HttpUtility.ParseQueryString(string.Empty);
+			query["gameProviderCode"] = gameProviderCode;
+			query["currencyCode"] = currencyCode;
+			query["amount"] = amount.ToString();
 
-			var content = new StringContent(JsonSerializer.Serialize(request, _SerializerOptions), encoding: Encoding.UTF8);
-			content.Headers.ContentType = MediaTypeHeaderValue.Parse(MediaTypeNames.Application.Json);
+			var requestUri = $"exchangerate/fund/in?{query}";
 
 			var response = await _httpClient
-				.PostAsync(
-				   requestUri: "exchangerate/fund-out",
-				   content: content,
+				.GetAsync(
+				   requestUri: requestUri,
 				   cancellationToken: cancellationToken)
 			   .ConfigureAwait(false);
 
@@ -79,7 +69,33 @@ namespace Tgs.GameCurrency.Client
 
 			var contentJson = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-			return decimal.Parse(contentJson);
+			return JsonSerializer.Deserialize<ExchangeRateFundResultViewModel>(contentJson, _SerializerOptions)!;
+		}
+
+		public async ValueTask<ExchangeRateFundResultViewModel> GetExchangeRateFundOutAsync(
+			string gameProviderCode,
+			string currencyCode,
+			decimal amount,
+			CancellationToken cancellationToken = default)
+		{
+			var query = HttpUtility.ParseQueryString(string.Empty);
+			query["gameProviderCode"] = gameProviderCode;
+			query["currencyCode"] = currencyCode;
+			query["amount"] = amount.ToString();
+
+			var requestUri = $"exchangerate/fund/out?{query}";
+
+			var response = await _httpClient
+				.GetAsync(
+				   requestUri: requestUri,
+				   cancellationToken: cancellationToken)
+			   .ConfigureAwait(false);
+
+			_ = response.EnsureSuccessStatusCode();
+
+			var contentJson = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+			return JsonSerializer.Deserialize<ExchangeRateFundResultViewModel>(contentJson, _SerializerOptions)!;
 		}
 	}
 }

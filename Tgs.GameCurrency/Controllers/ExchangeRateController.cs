@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Tgs.GameCurrency.ViewModels;
 
 namespace Tgs.GameCurrency.Controllers;
@@ -8,49 +7,86 @@ namespace Tgs.GameCurrency.Controllers;
 [Route("[controller]")]
 public class ExchangeRateController : ControllerBase
 {
-	private readonly IEnumerable<GameProviderExchangeRate> _gameProviderExchangeRates;
+	private readonly IGameProviderExchangeRateService _gameProviderExchangeRateService;
 
-	public ExchangeRateController(
-		IOptions<GameCurrencySettingsOption> options)
+	public ExchangeRateController(IGameProviderExchangeRateService gameProviderExchangeRateService)
 	{
-		_gameProviderExchangeRates = options.Value.GameProviderExchangeRates ?? Enumerable.Empty<GameProviderExchangeRate>();
+		_gameProviderExchangeRateService = gameProviderExchangeRateService ?? throw new ArgumentNullException(nameof(gameProviderExchangeRateService));
 	}
 
-	[HttpPost("fund-in")]
-	public decimal GetExchangeRateFundIn(ExchangeRateFundViewModel model)
+	/// <summary>
+	/// Gets the balance.
+	/// </summary>
+	/// <param name="gameProviderCode">The game provider code.</param>
+	/// <param name="currencyCode">The currency code.</param>
+	/// <param name="balance">The balance.</param>
+	/// <returns></returns>
+	[HttpGet("balance")]
+	public ExchangeRateBalanceResultViewModel GetBalance(
+		[FromQuery] string gameProviderCode,
+		[FromQuery] string currencyCode,
+		[FromQuery] decimal balance)
 	{
-		if (model.Amount == 0)
-		{
-			return model.Amount;
-		}
+		var exchangeRate = _gameProviderExchangeRateService.GetExchangeRates(gameProviderCode, currencyCode);
 
-		var exchangeRate = _gameProviderExchangeRates
-			.Where(x => x.GameProviderCode.Equals(model.GameProviderCode, StringComparison.InvariantCultureIgnoreCase)
-			&& x.CurrencyCode.Equals(model.CurrencyCode, StringComparison.OrdinalIgnoreCase))
-			.Select(x => x.ExchangeRate)
-			.SingleOrDefault(1);
-
-		return decimal.Round(model.Amount * exchangeRate, 6, MidpointRounding.ToZero);
+		return balance == 0 ?
+			new ExchangeRateBalanceResultViewModel(
+				ExchangeRate: exchangeRate,
+				Balance: balance) :
+			new ExchangeRateBalanceResultViewModel(
+				ExchangeRate: exchangeRate,
+				Balance: decimal.Round(balance * exchangeRate, 6, MidpointRounding.ToZero));
 	}
 
-	[HttpPost("fund-out")]
-	public decimal GetExchangeRateFundOut(ExchangeRateFundViewModel model)
+	/// <summary>
+	/// Gets the exchange rate fund in.
+	/// </summary>
+	/// <param name="gameProviderCode">The game provider code.</param>
+	/// <param name="currencyCode">The currency code.</param>
+	/// <param name="amount">The amount.</param>
+	/// <returns></returns>
+	[HttpGet("fund/in")]
+	public ExchangeRateFundResultViewModel GetExchangeRateFundIn(
+		[FromQuery] string gameProviderCode,
+		[FromQuery] string currencyCode,
+		[FromQuery] decimal amount)
 	{
-		if (model.Amount == 0)
-		{
-			return model.Amount;
-		}
+		var exchangeRate = _gameProviderExchangeRateService.GetExchangeRates(gameProviderCode, currencyCode);
 
-		var exchangeRate = _gameProviderExchangeRates
-			.Where(x => x.GameProviderCode.Equals(model.GameProviderCode, StringComparison.InvariantCultureIgnoreCase)
-			&& x.CurrencyCode.Equals(model.CurrencyCode, StringComparison.OrdinalIgnoreCase))
-			.Select(x => x.ExchangeRate)
-			.SingleOrDefault(1);
+		return amount == 0 ?
+			new ExchangeRateFundResultViewModel(
+				ExchangeRate: exchangeRate,
+				Amount: amount) :
+			new ExchangeRateFundResultViewModel(
+				ExchangeRate: exchangeRate,
+				Amount: decimal.Round(amount * exchangeRate, 6, MidpointRounding.ToZero));
+	}
 
-		return decimal.Round(model.Amount / exchangeRate, 6, MidpointRounding.ToZero);
+	/// <summary>
+	/// Gets the exchange rate fund out.
+	/// </summary>
+	/// <param name="gameProviderCode">The game provider code.</param>
+	/// <param name="currencyCode">The currency code.</param>
+	/// <param name="amount">The amount.</param>
+	/// <returns></returns>
+	[HttpGet("fund/out")]
+	public ExchangeRateFundResultViewModel GetExchangeRateFundOut(
+		[FromQuery] string gameProviderCode,
+		[FromQuery] string currencyCode,
+		[FromQuery] decimal amount)
+	{
+		var exchangeRate = _gameProviderExchangeRateService.GetExchangeRates(gameProviderCode, currencyCode);
+
+		return amount == 0 ?
+			new ExchangeRateFundResultViewModel(
+				ExchangeRate: exchangeRate,
+				Amount: amount) :
+			new ExchangeRateFundResultViewModel(
+				ExchangeRate: exchangeRate,
+				Amount: decimal.Round(amount / exchangeRate, 6, MidpointRounding.ToZero));
 	}
 
 	[HttpGet]
 	public IEnumerable<GameProviderExchangeRate> List()
-		=> _gameProviderExchangeRates;
+		=> _gameProviderExchangeRateService.GetExchangeRates();
 }
