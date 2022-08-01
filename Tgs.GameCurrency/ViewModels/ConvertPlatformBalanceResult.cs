@@ -1,5 +1,5 @@
 ﻿namespace Tgs.GameCurrency.ViewModels;
 
-public record ExchangeRateBalanceResultViewModel(
+public record ConvertPlatformBalanceResult(
 	decimal ExchangeRate,
 	decimal Balance);

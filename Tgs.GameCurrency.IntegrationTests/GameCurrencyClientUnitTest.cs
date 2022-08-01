@@ -11,12 +11,12 @@ namespace Tgs.GameCurrency.IntegrationTests;
 public class GameCurrencyClientUnitTest
 {
 	[TestMethod]
-	public async Task Platform_Currency_CNY_1_Gets_Balance_Game_Provider_IDR_Balance_Has_1_To_Get_Balance_1()
+	public async Task Game_Provider_Balance_CNY_Amount_1_Conversion_Platform_CNY_Amount_1()
 	{
 		var gameProviderCode = "AWC_PGS";
 		var currencyCode = "CNY";
 		var amount = 1m;
-		var expected = new ExchangeRateBalanceResultViewModel(
+		var expected = new ConvertPlatformBalanceResult(
 			ExchangeRate: 1,
 			Balance: 1);
 
@@ -26,7 +26,7 @@ public class GameCurrencyClientUnitTest
 
 		var sut = new GameCurrencyClient(httpClient);
 
-		var actual = await sut.GetExchangeRateBalanceAsync(
+		var actual = await sut.ConvertPlatformBalance(
 			gameProviderCode,
 			currencyCode,
 			amount).ConfigureAwait(false);
@@ -36,287 +36,12 @@ public class GameCurrencyClientUnitTest
 	}
 
 	[TestMethod]
-	public async Task Platform_Currency_CNY_Amount_1_FundIn_Game_Provider_CNY_To_Get_An_Amount_1()
-	{
-		var gameProviderCode = "AWC_PGS";
-		var currencyCode = "CNY";
-		var amount = 1m;
-		var expected = new ExchangeRateFundResultViewModel(
-			ExchangeRate: 1,
-			Amount: 1);
-
-		var web = CreateTestSettingSite();
-
-		var httpClient = web.CreateClient();
-
-		var sut = new GameCurrencyClient(httpClient);
-
-		var actual = await sut.GetExchangeRateFundInAsync(
-			gameProviderCode,
-			currencyCode,
-			amount).ConfigureAwait(false);
-
-		Assert.IsNotNull(actual);
-		_ = expected.Should().Be(actual);
-	}
-
-	[TestMethod]
-	public async Task Platform_Currency_CNY_Amount_1_FundOut_Game_Provider_CNY_To_Get_An_Amount_1()
-	{
-		var gameProviderCode = "AWC_PGS";
-		var currencyCode = "CNY";
-		var amount = 10000m;
-		var expected = new ExchangeRateFundResultViewModel(
-			ExchangeRate: 1,
-			Amount: 10000m);
-
-		var web = CreateTestSettingSite();
-
-		var httpClient = web.CreateClient();
-
-		var sut = new GameCurrencyClient(httpClient);
-
-		var actual = await sut.GetExchangeRateFundOutAsync(
-			gameProviderCode,
-			currencyCode,
-			amount).ConfigureAwait(false);
-
-		Assert.IsNotNull(actual);
-		_ = expected.Should().Be(actual);
-	}
-
-	[TestMethod]
-	public async Task Platform_Currency_IDR_1000_Amount_001M_FundIn_Game_Provider_IDR_To_Get_An_Amount_000001M()
-	{
-		var gameProviderCode = "AWC_PGS";
-		var currencyCode = "IDR_1000";
-		var amount = 0.01m;
-		var expected = new ExchangeRateFundResultViewModel(
-			ExchangeRate: 0.001m,
-			Amount: 0.00001m);
-
-		var web = CreateTestSettingSite();
-
-		var httpClient = web.CreateClient();
-
-		var sut = new GameCurrencyClient(httpClient);
-
-		var actual = await sut.GetExchangeRateFundInAsync(
-			gameProviderCode,
-			currencyCode,
-			amount).ConfigureAwait(false);
-
-		Assert.IsNotNull(actual);
-		_ = expected.Should().Be(actual);
-	}
-
-	[TestMethod]
-	public async Task Platform_Currency_IDR_1000_Amount_001m_FundOut_Game_Provider_IDR_To_Get_An_Amount_10()
-	{
-		var gameProviderCode = "AWC_PGS";
-		var currencyCode = "IDR_1000";
-		var amount = 0.01m;
-		var expected = new ExchangeRateFundResultViewModel(
-			ExchangeRate: 0.001m,
-			Amount: 10);
-
-		var web = CreateTestSettingSite();
-
-		var httpClient = web.CreateClient();
-
-		var sut = new GameCurrencyClient(httpClient);
-
-		var actual = await sut.GetExchangeRateFundOutAsync(
-			gameProviderCode,
-			currencyCode,
-			amount).ConfigureAwait(false);
-
-		Assert.IsNotNull(actual);
-		_ = expected.Should().Be(actual);
-	}
-
-	[TestMethod]
-	public async Task Platform_Currency_IDR_1000_Amount_1_FundIn_Game_Provider_IDR_To_Get_An_Amount_0001M()
-	{
-		var gameProviderCode = "AWC_PGS";
-		var currencyCode = "IDR_1000";
-		var amount = 1m;
-		var expected = new ExchangeRateFundResultViewModel(
-			ExchangeRate: 0.001m,
-			Amount: 0.001m);
-
-		var web = CreateTestSettingSite();
-
-		var httpClient = web.CreateClient();
-
-		var sut = new GameCurrencyClient(httpClient);
-
-		var actual = await sut.GetExchangeRateFundInAsync(
-			gameProviderCode,
-			currencyCode,
-			amount).ConfigureAwait(false);
-
-		Assert.IsNotNull(actual);
-		_ = expected.Should().Be(actual);
-	}
-
-	[TestMethod]
-	public async Task Platform_Currency_IDR_1000_Amount_1_FundOut_Game_Provider_IDR_To_Get_An_Amount_1000()
-	{
-		var gameProviderCode = "AWC_PGS";
-		var currencyCode = "IDR_1000";
-		var amount = 1m;
-		var expected = new ExchangeRateFundResultViewModel(
-			ExchangeRate: 0.001m,
-			Amount: 1000);
-
-		var web = CreateTestSettingSite();
-
-		var httpClient = web.CreateClient();
-
-		var sut = new GameCurrencyClient(httpClient);
-
-		var actual = await sut.GetExchangeRateFundOutAsync(
-			gameProviderCode,
-			currencyCode,
-			amount).ConfigureAwait(false);
-
-		Assert.IsNotNull(actual);
-		_ = expected.Should().Be(actual);
-	}
-
-	[TestMethod]
-	public async Task Platform_Currency_IDR_1000_Gets_Balance_Game_Provider_IDR_Balance_Has_1_To_Get_Balance_0001m()
-	{
-		var gameProviderCode = "AWC_PGS";
-		var currencyCode = "IDR_1000";
-		var amount = 1m;
-		var expected = new ExchangeRateBalanceResultViewModel(
-			ExchangeRate: 0.001m,
-			Balance: 0.001m);
-
-		var web = CreateTestSettingSite();
-
-		var httpClient = web.CreateClient();
-
-		var sut = new GameCurrencyClient(httpClient);
-
-		var actual = await sut.GetExchangeRateBalanceAsync(
-			gameProviderCode,
-			currencyCode,
-			amount).ConfigureAwait(false);
-
-		Assert.IsNotNull(actual);
-		_ = expected.Should().Be(actual);
-	}
-
-	[TestMethod]
-	public async Task Platform_Currency_IDR_Amount_001m_FundIn_Game_Provider_IDR_1000_To_Get_An_Amount_10()
-	{
-		var gameProviderCode = "AWC_PGS";
-		var currencyCode = "IDR";
-		var amount = 0.01m;
-		var expected = new ExchangeRateFundResultViewModel(
-			ExchangeRate: 1000,
-			Amount: 10);
-
-		var web = CreateTestSettingSite();
-
-		var httpClient = web.CreateClient();
-
-		var sut = new GameCurrencyClient(httpClient);
-
-		var actual = await sut.GetExchangeRateFundInAsync(
-			gameProviderCode,
-			currencyCode,
-			amount).ConfigureAwait(false);
-
-		Assert.IsNotNull(actual);
-		_ = expected.Should().Be(actual);
-	}
-
-	[TestMethod]
-	public async Task Platform_Currency_IDR_Amount_001M_FundOut_Game_Provider_IDR_1000_To_Get_An_Amount_000001M()
-	{
-		var gameProviderCode = "AWC_PGS";
-		var currencyCode = "IDR";
-		var amount = 0.01m;
-		var expected = new ExchangeRateFundResultViewModel(
-			ExchangeRate: 1000,
-			Amount: 0.00001m);
-
-		var web = CreateTestSettingSite();
-
-		var httpClient = web.CreateClient();
-
-		var sut = new GameCurrencyClient(httpClient);
-
-		var actual = await sut.GetExchangeRateFundOutAsync(
-			gameProviderCode,
-			currencyCode,
-			amount).ConfigureAwait(false);
-
-		Assert.IsNotNull(actual);
-		_ = expected.Should().Be(actual);
-	}
-
-	[TestMethod]
-	public async Task Platform_Currency_IDR_Amount_1_FundIn_Game_Provider_IDR_1000_To_Get_An_Amount_1000()
+	public async Task Game_Provider_Balance_IDR_Amount_1_Conversion_Platform_IDR1000_Amount_1000()
 	{
 		var gameProviderCode = "AWC_PGS";
 		var currencyCode = "IDR";
 		var amount = 1m;
-		var expected = new ExchangeRateFundResultViewModel(
-			ExchangeRate: 1000,
-			Amount: 1000);
-
-		var web = CreateTestSettingSite();
-
-		var httpClient = web.CreateClient();
-
-		var sut = new GameCurrencyClient(httpClient);
-
-		var actual = await sut.GetExchangeRateFundInAsync(
-			gameProviderCode,
-			currencyCode,
-			amount).ConfigureAwait(false);
-
-		Assert.IsNotNull(actual);
-		_ = expected.Should().Be(actual);
-	}
-
-	[TestMethod]
-	public async Task Platform_Currency_IDR_Amount_1_FundOut_Game_Provider_IDR_1000_To_Get_An_Amount_0001M()
-	{
-		var gameProviderCode = "AWC_PGS";
-		var currencyCode = "IDR";
-		var amount = 1m;
-		var expected = new ExchangeRateFundResultViewModel(
-			ExchangeRate: 1000,
-			Amount: 0.001m);
-
-		var web = CreateTestSettingSite();
-
-		var httpClient = web.CreateClient();
-
-		var sut = new GameCurrencyClient(httpClient);
-
-		var actual = await sut.GetExchangeRateFundOutAsync(
-			gameProviderCode,
-			currencyCode,
-			amount).ConfigureAwait(false);
-
-		Assert.IsNotNull(actual);
-		_ = expected.Should().Be(actual);
-	}
-
-	[TestMethod]
-	public async Task Platform_Currency_IDR_Gets_Balance_Game_Provider_IDR_1000_Balance_Has_1_To_Get_Balance_1000()
-	{
-		var gameProviderCode = "AWC_PGS";
-		var currencyCode = "IDR";
-		var amount = 1m;
-		var expected = new ExchangeRateBalanceResultViewModel(
+		var expected = new ConvertPlatformBalanceResult(
 			ExchangeRate: 1000,
 			Balance: 1000m);
 
@@ -326,7 +51,157 @@ public class GameCurrencyClientUnitTest
 
 		var sut = new GameCurrencyClient(httpClient);
 
-		var actual = await sut.GetExchangeRateBalanceAsync(
+		var actual = await sut.ConvertPlatformBalance(
+			gameProviderCode,
+			currencyCode,
+			amount).ConfigureAwait(false);
+
+		Assert.IsNotNull(actual);
+		_ = expected.Should().Be(actual);
+	}
+
+	[TestMethod]
+	public async Task Game_Provider_Balance_IDR1000_Amount_1_Conversion_Platform_IDR_Amount_0001M()
+	{
+		var gameProviderCode = "AWC_PGS";
+		var currencyCode = "IDR_1000";
+		var amount = 1m;
+		var expected = new ConvertPlatformBalanceResult(
+			ExchangeRate: 0.001m,
+			Balance: 0.001m);
+
+		var web = CreateTestSettingSite();
+
+		var httpClient = web.CreateClient();
+
+		var sut = new GameCurrencyClient(httpClient);
+
+		var actual = await sut.ConvertPlatformBalance(
+			gameProviderCode,
+			currencyCode,
+			amount).ConfigureAwait(false);
+
+		Assert.IsNotNull(actual);
+		_ = expected.Should().Be(actual);
+	}
+
+	[TestMethod]
+	public async Task Platform_Fund_CNY_Amount_1_Convert_Game_Provider_CNY_Amount_1()
+	{
+		var gameProviderCode = "AWC_PGS";
+		var currencyCode = "CNY";
+		var amount = 1m;
+		var expected = new ConvertGameProviderFundsResult(
+			ExchangeRate: 1,
+			Amount: 1m);
+
+		var web = CreateTestSettingSite();
+
+		var httpClient = web.CreateClient();
+
+		var sut = new GameCurrencyClient(httpClient);
+
+		var actual = await sut.ConvertGameProviderFunds(
+			gameProviderCode,
+			currencyCode,
+			amount).ConfigureAwait(false);
+
+		Assert.IsNotNull(actual);
+		_ = expected.Should().Be(actual);
+	}
+
+	[TestMethod]
+	public async Task Platform_Fund_IDR_Amount_001M_Convert_Game_Provider_IDR1000_Amount_000001M()
+	{
+		var gameProviderCode = "AWC_PGS";
+		var currencyCode = "IDR";
+		var amount = 0.01m;
+		var expected = new ConvertGameProviderFundsResult(
+			ExchangeRate: 1000,
+			Amount: 0.00001m);
+
+		var web = CreateTestSettingSite();
+
+		var httpClient = web.CreateClient();
+
+		var sut = new GameCurrencyClient(httpClient);
+
+		var actual = await sut.ConvertGameProviderFunds(
+			gameProviderCode,
+			currencyCode,
+			amount).ConfigureAwait(false);
+
+		Assert.IsNotNull(actual);
+		_ = expected.Should().Be(actual);
+	}
+
+	[TestMethod]
+	public async Task Platform_Fund_IDR_Amount_1_Convert_Game_Provider_IDR1000_Amount_0001M()
+	{
+		var gameProviderCode = "AWC_PGS";
+		var currencyCode = "IDR";
+		var amount = 1m;
+		var expected = new ConvertGameProviderFundsResult(
+			ExchangeRate: 1000,
+			Amount: 0.001m);
+
+		var web = CreateTestSettingSite();
+
+		var httpClient = web.CreateClient();
+
+		var sut = new GameCurrencyClient(httpClient);
+
+		var actual = await sut.ConvertGameProviderFunds(
+			gameProviderCode,
+			currencyCode,
+			amount).ConfigureAwait(false);
+
+		Assert.IsNotNull(actual);
+		_ = expected.Should().Be(actual);
+	}
+
+	[TestMethod]
+	public async Task Platform_Fund_IDR1000_Amount_001_Convert_Game_Provider_IDR_Amount_10()
+	{
+		var gameProviderCode = "AWC_PGS";
+		var currencyCode = "IDR_1000";
+		var amount = 0.01m;
+		var expected = new ConvertGameProviderFundsResult(
+			ExchangeRate: 0.001m,
+			Amount: 10m);
+
+		var web = CreateTestSettingSite();
+
+		var httpClient = web.CreateClient();
+
+		var sut = new GameCurrencyClient(httpClient);
+
+		var actual = await sut.ConvertGameProviderFunds(
+			gameProviderCode,
+			currencyCode,
+			amount).ConfigureAwait(false);
+
+		Assert.IsNotNull(actual);
+		_ = expected.Should().Be(actual);
+	}
+
+	[TestMethod]
+	public async Task Platform_Fund_IDR1000_Amount_1_Convert_Game_Provider_IDR_Amount_1000()
+	{
+		var gameProviderCode = "AWC_PGS";
+		var currencyCode = "IDR_1000";
+		var amount = 1;
+		var expected = new ConvertGameProviderFundsResult(
+			ExchangeRate: 0.001m,
+			Amount: 1000m);
+
+		var web = CreateTestSettingSite();
+
+		var httpClient = web.CreateClient();
+
+		var sut = new GameCurrencyClient(httpClient);
+
+		var actual = await sut.ConvertGameProviderFunds(
 			gameProviderCode,
 			currencyCode,
 			amount).ConfigureAwait(false);

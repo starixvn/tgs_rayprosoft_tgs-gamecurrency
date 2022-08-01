@@ -15,75 +15,68 @@ public class ExchangeRateController : ControllerBase
 	}
 
 	/// <summary>
-	/// Gets the balance.
+	/// Converts the game provider funds.
+	/// </summary>
+	/// <param name="gameProviderCode">The game provider code.</param>
+	/// <param name="currencyCode">The currency code.</param>
+	/// <param name="amount">The amount.</param>
+	/// <returns></returns>
+	[HttpGet("gameprovider/funds", Name = "ConvertGameProviderFunds")]
+	public ConvertGameProviderFundsResult ConvertGameProviderFunds(
+		[FromQuery] string gameProviderCode,
+		[FromQuery] string currencyCode,
+		[FromQuery] decimal amount)
+	{
+		var exchangeRate = _gameProviderExchangeRateService.GetExchangeRates(gameProviderCode, currencyCode);
+
+		return new ConvertGameProviderFundsResult(
+					ExchangeRate: exchangeRate,
+					Amount: _gameProviderExchangeRateService.ConvertGameProviderFunds(exchangeRate, amount));
+	}
+
+	/// <summary>
+	/// Converts the game provider rounds.
+	/// </summary>
+	/// <param name="gameProviderCode">The game provider code.</param>
+	/// <param name="currencyCode">The currency code.</param>
+	/// <param name="request">The request.</param>
+	/// <returns></returns>
+	[HttpPost("gameprovider/rounds", Name = "ConvertGameProviderRounds")]
+	public ConvertGameProviderRoundsResult ConvertGameProviderRounds(
+		[FromQuery] string gameProviderCode,
+		[FromQuery] string currencyCode,
+		[FromBody] ConvertGameProviderRoundsRequest request)
+	{
+		var exchangeRate = _gameProviderExchangeRateService.GetExchangeRates(gameProviderCode, currencyCode);
+
+		return new ConvertGameProviderRoundsResult(
+					ExchangeRate: exchangeRate,
+					BetAmount: _gameProviderExchangeRateService.ConvertGameProviderRounds(exchangeRate, request.BetAmount.GetValueOrDefault(0)),
+					ValidBetAmount: _gameProviderExchangeRateService.ConvertGameProviderRounds(exchangeRate, request.ValidBetAmount.GetValueOrDefault(0)),
+					SettleAmount: _gameProviderExchangeRateService.ConvertGameProviderRounds(exchangeRate, request.SettleAmount.GetValueOrDefault(0)),
+					Commission: _gameProviderExchangeRateService.ConvertGameProviderRounds(exchangeRate, request.Commission.GetValueOrDefault(0)),
+					Turnover: _gameProviderExchangeRateService.ConvertGameProviderRounds(exchangeRate, request.Turnover.GetValueOrDefault(0)),
+					WinLoss: _gameProviderExchangeRateService.ConvertGameProviderRounds(exchangeRate, request.WinLoss.GetValueOrDefault(0)));
+	}
+
+	/// <summary>
+	/// Converts the platform balance.
 	/// </summary>
 	/// <param name="gameProviderCode">The game provider code.</param>
 	/// <param name="currencyCode">The currency code.</param>
 	/// <param name="balance">The balance.</param>
 	/// <returns></returns>
-	[HttpGet("balance")]
-	public ExchangeRateBalanceResultViewModel GetBalance(
+	[HttpGet("platform/balance", Name = "ConvertPlatformBalance")]
+	public ConvertPlatformBalanceResult ConvertPlatformBalance(
 		[FromQuery] string gameProviderCode,
 		[FromQuery] string currencyCode,
 		[FromQuery] decimal balance)
 	{
 		var exchangeRate = _gameProviderExchangeRateService.GetExchangeRates(gameProviderCode, currencyCode);
 
-		return balance == 0 ?
-			new ExchangeRateBalanceResultViewModel(
-				ExchangeRate: exchangeRate,
-				Balance: balance) :
-			new ExchangeRateBalanceResultViewModel(
-				ExchangeRate: exchangeRate,
-				Balance: decimal.Round(balance * exchangeRate, 6, MidpointRounding.ToZero));
-	}
-
-	/// <summary>
-	/// Gets the exchange rate fund in.
-	/// </summary>
-	/// <param name="gameProviderCode">The game provider code.</param>
-	/// <param name="currencyCode">The currency code.</param>
-	/// <param name="amount">The amount.</param>
-	/// <returns></returns>
-	[HttpGet("fund/in")]
-	public ExchangeRateFundResultViewModel GetExchangeRateFundIn(
-		[FromQuery] string gameProviderCode,
-		[FromQuery] string currencyCode,
-		[FromQuery] decimal amount)
-	{
-		var exchangeRate = _gameProviderExchangeRateService.GetExchangeRates(gameProviderCode, currencyCode);
-
-		return amount == 0 ?
-			new ExchangeRateFundResultViewModel(
-				ExchangeRate: exchangeRate,
-				Amount: amount) :
-			new ExchangeRateFundResultViewModel(
-				ExchangeRate: exchangeRate,
-				Amount: decimal.Round(amount * exchangeRate, 6, MidpointRounding.ToZero));
-	}
-
-	/// <summary>
-	/// Gets the exchange rate fund out.
-	/// </summary>
-	/// <param name="gameProviderCode">The game provider code.</param>
-	/// <param name="currencyCode">The currency code.</param>
-	/// <param name="amount">The amount.</param>
-	/// <returns></returns>
-	[HttpGet("fund/out")]
-	public ExchangeRateFundResultViewModel GetExchangeRateFundOut(
-		[FromQuery] string gameProviderCode,
-		[FromQuery] string currencyCode,
-		[FromQuery] decimal amount)
-	{
-		var exchangeRate = _gameProviderExchangeRateService.GetExchangeRates(gameProviderCode, currencyCode);
-
-		return amount == 0 ?
-			new ExchangeRateFundResultViewModel(
-				ExchangeRate: exchangeRate,
-				Amount: amount) :
-			new ExchangeRateFundResultViewModel(
-				ExchangeRate: exchangeRate,
-				Amount: decimal.Round(amount / exchangeRate, 6, MidpointRounding.ToZero));
+		return new ConvertPlatformBalanceResult(
+					ExchangeRate: exchangeRate,
+					Balance: _gameProviderExchangeRateService.ConvertPlatformBalance(exchangeRate, balance));
 	}
 
 	[HttpGet]

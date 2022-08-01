@@ -1,6 +1,6 @@
 ﻿namespace Tgs.GameCurrency.Client
 {
-	public record ExchangeRateFundResultViewModel(
+	public record ConvertGameProviderFundsResult(
 		decimal ExchangeRate,
 		decimal Amount);
 }
