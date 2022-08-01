@@ -22,41 +22,16 @@ public class ExchangeRateController : ControllerBase
 	/// <param name="amount">The amount.</param>
 	/// <returns></returns>
 	[HttpGet("gameprovider/funds", Name = "ConvertGameProviderFunds")]
-	public ConvertGameProviderFundsResult ConvertGameProviderFunds(
+	public ConvertGameProviderFundsResultViewModel ConvertGameProviderFunds(
 		[FromQuery] string gameProviderCode,
 		[FromQuery] string currencyCode,
 		[FromQuery] decimal amount)
 	{
 		var exchangeRate = _gameProviderExchangeRateService.GetExchangeRates(gameProviderCode, currencyCode);
 
-		return new ConvertGameProviderFundsResult(
+		return new ConvertGameProviderFundsResultViewModel(
 					ExchangeRate: exchangeRate,
 					Amount: _gameProviderExchangeRateService.ConvertGameProviderFunds(exchangeRate, amount));
-	}
-
-	/// <summary>
-	/// Converts the game provider rounds.
-	/// </summary>
-	/// <param name="gameProviderCode">The game provider code.</param>
-	/// <param name="currencyCode">The currency code.</param>
-	/// <param name="request">The request.</param>
-	/// <returns></returns>
-	[HttpPost("gameprovider/rounds", Name = "ConvertGameProviderRounds")]
-	public ConvertGameProviderRoundsResult ConvertGameProviderRounds(
-		[FromQuery] string gameProviderCode,
-		[FromQuery] string currencyCode,
-		[FromBody] ConvertGameProviderRoundsRequest request)
-	{
-		var exchangeRate = _gameProviderExchangeRateService.GetExchangeRates(gameProviderCode, currencyCode);
-
-		return new ConvertGameProviderRoundsResult(
-					ExchangeRate: exchangeRate,
-					BetAmount: _gameProviderExchangeRateService.ConvertGameProviderRounds(exchangeRate, request.BetAmount.GetValueOrDefault(0)),
-					ValidBetAmount: _gameProviderExchangeRateService.ConvertGameProviderRounds(exchangeRate, request.ValidBetAmount.GetValueOrDefault(0)),
-					SettleAmount: _gameProviderExchangeRateService.ConvertGameProviderRounds(exchangeRate, request.SettleAmount.GetValueOrDefault(0)),
-					Commission: _gameProviderExchangeRateService.ConvertGameProviderRounds(exchangeRate, request.Commission.GetValueOrDefault(0)),
-					Turnover: _gameProviderExchangeRateService.ConvertGameProviderRounds(exchangeRate, request.Turnover.GetValueOrDefault(0)),
-					WinLoss: _gameProviderExchangeRateService.ConvertGameProviderRounds(exchangeRate, request.WinLoss.GetValueOrDefault(0)));
 	}
 
 	/// <summary>
@@ -67,16 +42,41 @@ public class ExchangeRateController : ControllerBase
 	/// <param name="balance">The balance.</param>
 	/// <returns></returns>
 	[HttpGet("platform/balance", Name = "ConvertPlatformBalance")]
-	public ConvertPlatformBalanceResult ConvertPlatformBalance(
+	public ConvertPlatformBalanceResultViewModel ConvertPlatformBalance(
 		[FromQuery] string gameProviderCode,
 		[FromQuery] string currencyCode,
 		[FromQuery] decimal balance)
 	{
 		var exchangeRate = _gameProviderExchangeRateService.GetExchangeRates(gameProviderCode, currencyCode);
 
-		return new ConvertPlatformBalanceResult(
+		return new ConvertPlatformBalanceResultViewModel(
 					ExchangeRate: exchangeRate,
 					Balance: _gameProviderExchangeRateService.ConvertPlatformBalance(exchangeRate, balance));
+	}
+
+	/// <summary>
+	/// Converts the platform rounds.
+	/// </summary>
+	/// <param name="gameProviderCode">The game provider code.</param>
+	/// <param name="currencyCode">The currency code.</param>
+	/// <param name="model">The model.</param>
+	/// <returns></returns>
+	[HttpPost("platform/rounds", Name = "ConvertPlatformRounds")]
+	public ConvertPlatformRoundsResultViewModel ConvertPlatformRounds(
+		[FromQuery] string gameProviderCode,
+		[FromQuery] string currencyCode,
+		[FromBody] ConvertPlatformRoundsRequestViewModel model)
+	{
+		var exchangeRate = _gameProviderExchangeRateService.GetExchangeRates(gameProviderCode, currencyCode);
+
+		return new ConvertPlatformRoundsResultViewModel(
+					ExchangeRate: exchangeRate,
+					BetAmount: _gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.BetAmount),
+					ValidBetAmount: _gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.ValidBetAmount),
+					SettleAmount: _gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.SettleAmount),
+					Commission: _gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.Commission),
+					Turnover: _gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.Turnover),
+					WinLoss: _gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.WinLoss));
 	}
 
 	[HttpGet]

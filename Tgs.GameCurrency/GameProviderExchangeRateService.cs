@@ -14,11 +14,11 @@ namespace Tgs.GameCurrency
 		public decimal ConvertGameProviderFunds(decimal exchangeRate, decimal amount)
 			=> amount == 0 ? amount : decimal.Round(amount / exchangeRate, 6, MidpointRounding.ToZero);
 
-		public decimal ConvertGameProviderRounds(decimal exchangeRate, decimal amount)
-			=> amount == 0 ? amount : decimal.Round(amount / exchangeRate, 6, MidpointRounding.ToZero);
-
 		public decimal ConvertPlatformBalance(decimal exchangeRate, decimal balance)
 			=> balance == 0 ? balance : decimal.Round(balance * exchangeRate, 6, MidpointRounding.ToZero);
+
+		public decimal ConvertPlatformRounds(decimal exchangeRate, decimal amount)
+					=> amount == 0 ? amount : decimal.Round(amount * exchangeRate, 6, MidpointRounding.ToZero);
 
 		public decimal GetExchangeRates(string gameProviderCode, string currencyCode)
 			=> _gameProviderExchangeRates

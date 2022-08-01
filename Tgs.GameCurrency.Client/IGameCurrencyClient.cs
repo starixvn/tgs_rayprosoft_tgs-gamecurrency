@@ -2,22 +2,22 @@
 {
 	public interface IGameCurrencyClient
 	{
-		public ValueTask<ConvertGameProviderFundsResult> ConvertGameProviderFunds(
+		public ValueTask<ConvertGameProviderFundsResult> ConvertGameProviderFundsAsync(
 			string gameProviderCode,
 			string currencyCode,
 			decimal amount,
 			CancellationToken cancellationToken = default);
 
-		public ValueTask<ConvertGameProviderRoundsResult> ConvertGameProviderRounds(
-			string gameProviderCode,
-			string currencyCode,
-			ConvertGameProviderRoundsRequest request,
-			CancellationToken cancellationToken = default);
-
-		public ValueTask<ConvertPlatformBalanceResult> ConvertPlatformBalance(
+		public ValueTask<ConvertPlatformBalanceResult> ConvertPlatformBalanceAsync(
 							string gameProviderCode,
 			string currencyCode,
 			decimal balance,
+			CancellationToken cancellationToken = default);
+
+		public ValueTask<ConvertPlatformRoundsResult> ConvertPlatformRoundsAsync(
+					string gameProviderCode,
+			string currencyCode,
+			ConvertPlatformRoundsRequest request,
 			CancellationToken cancellationToken = default);
 	}
 }

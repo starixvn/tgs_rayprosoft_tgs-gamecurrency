@@ -4,9 +4,9 @@
 	{
 		decimal ConvertGameProviderFunds(decimal exchangeRate, decimal amount);
 
-		decimal ConvertGameProviderRounds(decimal exchangeRate, decimal amount);
-
 		decimal ConvertPlatformBalance(decimal exchangeRate, decimal balance);
+
+		decimal ConvertPlatformRounds(decimal exchangeRate, decimal amount);
 
 		decimal GetExchangeRates(string gameProviderCode, string currencyCode);
 

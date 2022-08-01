@@ -1,11 +1,10 @@
 ﻿namespace Tgs.GameCurrency.Client
 {
-	public record ConvertGameProviderRoundsResult(
-		decimal ExchangeRate,
+	public record ConvertPlatformRoundsRequest(
 		decimal BetAmount,
-		decimal ValidBetAmount,
-		decimal SettleAmount,
 		decimal Commission,
+		decimal SettleAmount,
 		decimal Turnover,
+		decimal ValidBetAmount,
 		decimal WinLoss);
 }
