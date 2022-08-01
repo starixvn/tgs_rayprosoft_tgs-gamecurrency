@@ -2,9 +2,9 @@
 {
 	public record ConvertPlatformRoundsRequest(
 		decimal BetAmount,
-		decimal Commission,
-		decimal SettleAmount,
-		decimal Turnover,
 		decimal ValidBetAmount,
+		decimal SettleAmount,
+		decimal Commission,
+		decimal Turnover,
 		decimal WinLoss);
 }
