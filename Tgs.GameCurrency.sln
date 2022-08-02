@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "方案項目", "方案項目", "{153F0E76-8CF6-4D0A-974A-3800B9C7AFA3}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		CodeMaid.config = CodeMaid.config
+		NuGet.config = NuGet.config
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.GameCurrency", "Tgs.GameCurrency\Tgs.GameCurrency.csproj", "{DED39645-6855-4563-8FCA-D36B2D8E384D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.GameCurrency.Client", "Tgs.GameCurrency.Client\Tgs.GameCurrency.Client.csproj", "{73C14E6E-24A9-4A74-957B-0499EDBEFCD8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.GameCurrency.IntegrationTests", "Tgs.GameCurrency.IntegrationTests\Tgs.GameCurrency.IntegrationTests.csproj", "{123C7AFE-F14E-466E-98DE-EC0CB1333D47}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DED39645-6855-4563-8FCA-D36B2D8E384D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DED39645-6855-4563-8FCA-D36B2D8E384D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DED39645-6855-4563-8FCA-D36B2D8E384D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DED39645-6855-4563-8FCA-D36B2D8E384D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73C14E6E-24A9-4A74-957B-0499EDBEFCD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73C14E6E-24A9-4A74-957B-0499EDBEFCD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73C14E6E-24A9-4A74-957B-0499EDBEFCD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73C14E6E-24A9-4A74-957B-0499EDBEFCD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{123C7AFE-F14E-466E-98DE-EC0CB1333D47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{123C7AFE-F14E-466E-98DE-EC0CB1333D47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{123C7AFE-F14E-466E-98DE-EC0CB1333D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{123C7AFE-F14E-466E-98DE-EC0CB1333D47}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B60F902A-4436-412F-9650-5E90FECE7E42}
+	EndGlobalSection
+EndGlobal
