@@ -11,18 +11,18 @@ public partial class GameCurrencyClientUnitTest
 		var gameProviderCode = "AWC_PGS";
 		var currencyCode = "CNY";
 		var request = new ConvertPlatformRoundsRequest(
-			BetAmount: 1,
-			ValidBetAmount: 1,
-			SettleAmount: 2,
+			Bet: 1,
+			ValidBet: 1,
+			Settle: 2,
 			Commission: 1,
 			Turnover: 1,
 			WinLoss: 1);
 
 		var expected = new ConvertPlatformRoundsResult(
 			ExchangeRate: 1,
-			BetAmount: 1,
-			ValidBetAmount: 1,
-			SettleAmount: 2,
+			Bet: 1,
+			ValidBet: 1,
+			Settle: 2,
 			Commission: 1,
 			Turnover: 1,
 			WinLoss: 1);
@@ -48,18 +48,18 @@ public partial class GameCurrencyClientUnitTest
 		var gameProviderCode = "AWC_PGS";
 		var currencyCode = "IDR_1000";
 		var request = new ConvertPlatformRoundsRequest(
-			BetAmount: 1,
-			ValidBetAmount: 1,
-			SettleAmount: 2,
+			Bet: 1,
+			ValidBet: 1,
+			Settle: 2,
 			Commission: 1,
 			Turnover: 1,
 			WinLoss: 1);
 
 		var expected = new ConvertPlatformRoundsResult(
 			ExchangeRate: 0.001m,
-			BetAmount: 0.001m,
-			ValidBetAmount: 0.001m,
-			SettleAmount: 0.002m,
+			Bet: 0.001m,
+			ValidBet: 0.001m,
+			Settle: 0.002m,
 			Commission: 0.001m,
 			Turnover: 0.001m,
 			WinLoss: 0.001m);
@@ -85,18 +85,18 @@ public partial class GameCurrencyClientUnitTest
 		var gameProviderCode = "AWC_PGS";
 		var currencyCode = "IDR";
 		var request = new ConvertPlatformRoundsRequest(
-			BetAmount: 1,
-			ValidBetAmount: 1,
-			SettleAmount: 2,
+			Bet: 1,
+			ValidBet: 1,
+			Settle: 2,
 			Commission: 1,
 			Turnover: 1,
 			WinLoss: 1);
 
 		var expected = new ConvertPlatformRoundsResult(
 			ExchangeRate: 1000,
-			BetAmount: 1000,
-			ValidBetAmount: 1000,
-			SettleAmount: 2000,
+			Bet: 1000,
+			ValidBet: 1000,
+			Settle: 2000,
 			Commission: 1000,
 			Turnover: 1000,
 			WinLoss: 1000);

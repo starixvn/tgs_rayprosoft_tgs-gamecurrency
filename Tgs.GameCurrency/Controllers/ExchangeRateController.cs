@@ -71,9 +71,9 @@ public class ExchangeRateController : ControllerBase
 
 		return new ConvertPlatformRoundsResultViewModel(
 					ExchangeRate: exchangeRate,
-					BetAmount: _gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.BetAmount),
-					ValidBetAmount: _gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.ValidBetAmount),
-					SettleAmount: _gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.SettleAmount),
+					Bet: _gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.Bet),
+					ValidBet: _gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.ValidBet),
+					Settle: _gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.Settle),
 					Commission: _gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.Commission),
 					Turnover: _gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.Turnover),
 					WinLoss: _gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.WinLoss));

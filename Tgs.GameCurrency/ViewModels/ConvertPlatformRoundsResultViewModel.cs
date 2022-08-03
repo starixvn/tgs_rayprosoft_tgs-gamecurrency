@@ -2,9 +2,9 @@
 {
 	public record ConvertPlatformRoundsResultViewModel(
 		decimal ExchangeRate,
-		decimal BetAmount,
-		decimal ValidBetAmount,
-		decimal SettleAmount,
+		decimal Bet,
+		decimal ValidBet,
+		decimal Settle,
 		decimal Commission,
 		decimal Turnover,
 		decimal WinLoss);
