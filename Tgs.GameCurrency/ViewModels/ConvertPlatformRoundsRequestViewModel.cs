@@ -1,12 +1,20 @@
-﻿namespace Tgs.GameCurrency.ViewModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Tgs.GameCurrency.ViewModels
 {
 	public record ConvertPlatformRoundsRequestViewModel
 	{
-		public decimal BetAmount { get; init; }
-		public decimal ValidBetAmount { get; init; }
-		public decimal SettleAmount { get; init; }
+		[Required]
+		public decimal Bet { get; init; }
+		[Required]
+		public decimal ValidBet { get; init; }
+		[Required]
+		public decimal Settle { get; init; }
+		[Required]
 		public decimal Commission { get; init; }
+		[Required]
 		public decimal Turnover { get; init; }
+		[Required]
 		public decimal WinLoss { get; init; }
 	}
 }
