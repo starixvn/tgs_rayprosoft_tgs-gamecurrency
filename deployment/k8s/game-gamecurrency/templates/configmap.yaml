@@ -8,13 +8,19 @@ data:
     {
       "GameCurrencySettings": {
         "GameProviderExchangeRates": [
-            {
-              "GameProviderCode": "AWC_PGS",
-              "CurrencyCode": "IDR",
-              "GameProviderCurrencyCode": "IDR",
-              "ExchangeRate": 1000
-            }
-          ]
+          {
+            "GameProviderCode": "AWC_PGS",
+            "CurrencyCode": "IDR",
+            "GameProviderCurrencyCode": "IDR",
+            "ExchangeRate": 1000
+          },
+          {
+            "GameProviderCode": "BTI",
+            "CurrencyCode": "IDR",
+            "GameProviderCurrencyCode": "IDR",
+            "ExchangeRate": 1000
+          }
+        ]
       }
     }
   monitor.settings.json: |

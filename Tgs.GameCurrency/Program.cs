@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -10,84 +11,88 @@ using Tgs.GameCurrency;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration
-	.AddJsonFile("/config/appsettings.json", true)
-	.AddEnvironmentVariables();
+    .AddJsonFile("/config/appsettings.json", true)
+    .AddEnvironmentVariables();
 
 builder.Logging
-	.AddOpenTelemetry(options =>
-	{
-		options.IncludeFormattedMessage = true;
-		options.ParseStateValues = true;
-		_ = options.AddFluentdForwardExporter(fluentOptions =>
-		{
-			var nodeIp = builder.Configuration.GetValue<string>("NODE_IP");
-			fluentOptions.Host = nodeIp;
-			fluentOptions.Tag = builder.Configuration.GetValue<string>("OTEL_SERVICE_NAME");
-			fluentOptions.UseMessagePack();
-		});
-	});
+    .AddOpenTelemetry(options =>
+    {
+        options.IncludeFormattedMessage = true;
+        options.ParseStateValues = true;
+        _ = options.AddFluentdForwardExporter(fluentOptions =>
+        {
+            var nodeIp = builder.Configuration.GetValue<string>("NODE_IP");
+            fluentOptions.Host = nodeIp;
+            fluentOptions.Tag = builder.Configuration.GetValue<string>("OTEL_SERVICE_NAME");
+            fluentOptions.UseMessagePack();
+        });
+    });
 
 // Add services to the container.
 
 builder.Services
-	.AddRouting(options => options.LowercaseUrls = true)
-	.AddControllers(options =>
-	{
-		options.Filters.Add(new ProducesAttribute("application/json"));
-		options.Filters.Add(new ConsumesAttribute("application/json"));
-	})
-	.AddJsonOptions(options =>
-	{
-		options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-	});
+    .AddRouting(options => options.LowercaseUrls = true)
+    .AddControllers(options =>
+    {
+        options.Filters.Add(new ProducesAttribute("application/json"));
+        options.Filters.Add(new ConsumesAttribute("application/json"));
+    })
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services
-	.AddOptions<GameCurrencySettingsOption>()
-	.Configure((options) => builder.Configuration.GetSection("GameCurrencySettings").Bind(options))
-	.Services
-	.AddSingleton<IGameProviderExchangeRateService, GameProviderExchangeRateService>();
+var gameCurrencySettings = builder.Configuration.GetSection("GameCurrencySettings").Get<GameCurrencySettingsOption>();
+
+Console.WriteLine(JsonSerializer.Serialize(gameCurrencySettings));
 
 builder.Services
-	.AddSingleton<IConfigureOptions<OtlpExporterOptions>>(
-		sp => new ConfigureNamedOptions<OtlpExporterOptions>(
-			Options.DefaultName,
-			exporterOptions =>
-			{
-				var config = sp.GetRequiredService<IConfiguration>();
-				var nodeIp = config.GetValue<string>("NODE_IP");
+    .AddOptions<GameCurrencySettingsOption>()
+    .Configure((options) => builder.Configuration.GetSection("GameCurrencySettings").Bind(options))
+    .Services
+    .AddSingleton<IGameProviderExchangeRateService, GameProviderExchangeRateService>();
 
-				if (!string.IsNullOrWhiteSpace(nodeIp))
-					exporterOptions.Endpoint = new Uri($"http://{nodeIp}:4317");
+builder.Services
+    .AddSingleton<IConfigureOptions<OtlpExporterOptions>>(
+        sp => new ConfigureNamedOptions<OtlpExporterOptions>(
+            Options.DefaultName,
+            exporterOptions =>
+            {
+                var config = sp.GetRequiredService<IConfiguration>();
+                var nodeIp = config.GetValue<string>("NODE_IP");
 
-				config.GetSection("Opentelemetry:Tracing").Bind(exporterOptions);
-			}))
-	.AddOpenTelemetryTracing(
-		tracingBuilder => tracingBuilder
-			.SetResourceBuilder(ResourceBuilder.CreateDefault()
-				.AddEnvironmentVariableDetector())
-			.AddSource("Tgs.*")
-			.AddSource("TGS.*")
-			.AddAspNetCoreInstrumentation()
-			.AddEntityFrameworkCoreInstrumentation(options => options.SetDbStatementForText = true)
-			.AddProfileViewExporter()
-			.AddOtlpExporter())
-	.AddProfileViewer()
-	.Configure<AspNetCoreInstrumentationOptions>(options =>
-	{
-		options.Filter = httpContext =>
-		{
-			return !httpContext.Request.Path.HasValue
-				|| !httpContext.Request.Path.StartsWithSegments("/swagger")
-				&& !httpContext.Request.Path.StartsWithSegments("/healthz")
-				&& !httpContext.Request.Path.StartsWithSegments("/metrics")
-				&& !httpContext.Request.Path.StartsWithSegments("/profiler/")
-				&& !new[] { "html", "ico", "png", "jpg" }.Any(
-					ext => httpContext.Request.Path.Value.EndsWith($".{ext}"));
-		};
-	});
+                if (!string.IsNullOrWhiteSpace(nodeIp))
+                    exporterOptions.Endpoint = new Uri($"http://{nodeIp}:4317");
+
+                config.GetSection("Opentelemetry:Tracing").Bind(exporterOptions);
+            }))
+    .AddOpenTelemetryTracing(
+        tracingBuilder => tracingBuilder
+            .SetResourceBuilder(ResourceBuilder.CreateDefault()
+                .AddEnvironmentVariableDetector())
+            .AddSource("Tgs.*")
+            .AddSource("TGS.*")
+            .AddAspNetCoreInstrumentation()
+            .AddEntityFrameworkCoreInstrumentation(options => options.SetDbStatementForText = true)
+            .AddProfileViewExporter()
+            .AddOtlpExporter())
+    .AddProfileViewer()
+    .Configure<AspNetCoreInstrumentationOptions>(options =>
+    {
+        options.Filter = httpContext =>
+        {
+            return !httpContext.Request.Path.HasValue
+                || !httpContext.Request.Path.StartsWithSegments("/swagger")
+                && !httpContext.Request.Path.StartsWithSegments("/healthz")
+                && !httpContext.Request.Path.StartsWithSegments("/metrics")
+                && !httpContext.Request.Path.StartsWithSegments("/profiler/")
+                && !new[] { "html", "ico", "png", "jpg" }.Any(
+                    ext => httpContext.Request.Path.Value.EndsWith($".{ext}"));
+        };
+    });
 
 builder.Services.AddHealthChecks();
 
