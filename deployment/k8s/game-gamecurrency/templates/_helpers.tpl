@@ -47,8 +47,8 @@ Selector labels
 */}}
 {{- define "game-gamecurrency.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "game-gamecurrency.name" . }}
+app.kubernetes.io/instance: RELEASE-NAME
 app: {{ include "game-gamecurrency.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
 tgs.kind: game
 {{- end }}
 
