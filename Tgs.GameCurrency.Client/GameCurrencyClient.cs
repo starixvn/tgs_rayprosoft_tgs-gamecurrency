@@ -7,116 +7,116 @@ using System.Web;
 
 namespace Tgs.GameCurrency.Client
 {
-	internal class GameCurrencyClient : IGameCurrencyClient
-	{
-		private static readonly JsonSerializerOptions _SerializerOptions = new()
-		{
-			// Gets or sets a value that specifies the policy used to convert a property's name on an object to another format, such as camel-casing, or null to leave property names unchanged.
-			// Gets the naming policy for camel-casing.
-			PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+    internal class GameCurrencyClient : IGameCurrencyClient
+    {
+        private static readonly JsonSerializerOptions _SerializerOptions = new()
+        {
+            // Gets or sets a value that specifies the policy used to convert a property's name on an object to another format, such as camel-casing, or null to leave property names unchanged.
+            // Gets the naming policy for camel-casing.
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
 
-			// Gets or sets a value that indicates whether JSON should use pretty printing. By default, JSON is serialized without any extra white space.
-			WriteIndented = false,
+            // Gets or sets a value that indicates whether JSON should use pretty printing. By default, JSON is serialized without any extra white space.
+            WriteIndented = false,
 
-			// Always				1	Property will always be ignored.
-			// Never				0	Property will always be serialized and deserialized,regardless of IgnoreNullValues configuration.
-			// WhenWritingDefault	2	Property will only be ignored if it is null.
-			// WhenWritingNull		3	If the value is null,the property is ignored during serialization.This is applied only to reference - type properties and fields.
-			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
+            // Always				1	Property will always be ignored.
+            // Never				0	Property will always be serialized and deserialized,regardless of IgnoreNullValues configuration.
+            // WhenWritingDefault	2	Property will only be ignored if it is null.
+            // WhenWritingNull		3	If the value is null,the property is ignored during serialization.This is applied only to reference - type properties and fields.
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
 
-			Converters =
-			{
+            Converters =
+            {
 				// Converts enumeration values to and from strings.
 				new JsonStringEnumConverter()
-			}
-		};
+            }
+        };
 
-		private readonly HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
-		public GameCurrencyClient(HttpClient httpClient)
-		  => _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+        public GameCurrencyClient(HttpClient httpClient)
+          => _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
 
-		public async ValueTask<ConvertGameProviderFundsResult> ConvertGameProviderFundsAsync(
-			string gameProviderCode,
-			string currencyCode,
-			decimal amount,
-			CancellationToken cancellationToken = default)
-		{
-			var query = HttpUtility.ParseQueryString(string.Empty);
-			query["gameProviderCode"] = gameProviderCode;
-			query["currencyCode"] = currencyCode;
-			query["amount"] = amount.ToString();
+        public async ValueTask<ConvertGameProviderFundsResult> ConvertGameProviderFundsAsync(
+            string gameProviderCode,
+            string currencyCode,
+            decimal amount,
+            CancellationToken cancellationToken = default)
+        {
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            query["gameProviderCode"] = gameProviderCode;
+            query["currencyCode"] = currencyCode;
+            query["amount"] = amount.ToString();
 
-			var requestUri = $"exchangerate/gameprovider/funds?{query}";
+            var requestUri = $"exchangerate/gameprovider/funds?{query}";
 
-			var response = await _httpClient
-				.GetAsync(
-				   requestUri: requestUri,
-				   cancellationToken: cancellationToken)
-			   .ConfigureAwait(false);
+            var response = await _httpClient
+                .GetAsync(
+                   requestUri: requestUri,
+                   cancellationToken: cancellationToken)
+               .ConfigureAwait(false);
 
-			_ = response.EnsureSuccessStatusCode();
+            _ = response.EnsureSuccessStatusCode();
 
-			var contentJson = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+            var contentJson = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-			return JsonSerializer.Deserialize<ConvertGameProviderFundsResult>(contentJson, _SerializerOptions)!;
-		}
+            return JsonSerializer.Deserialize<ConvertGameProviderFundsResult>(contentJson, _SerializerOptions)!;
+        }
 
-		public async ValueTask<ConvertPlatformBalanceResult> ConvertPlatformBalanceAsync(
-			string gameProviderCode,
-			string currencyCode,
-			decimal balance,
-			CancellationToken cancellationToken = default)
-		{
-			var query = HttpUtility.ParseQueryString(string.Empty);
-			query["gameProviderCode"] = gameProviderCode;
-			query["currencyCode"] = currencyCode;
-			query["balance"] = balance.ToString();
+        public async ValueTask<ConvertPlatformBalanceResult> ConvertPlatformBalanceAsync(
+            string gameProviderCode,
+            string currencyCode,
+            decimal balance,
+            CancellationToken cancellationToken = default)
+        {
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            query["gameProviderCode"] = gameProviderCode;
+            query["currencyCode"] = currencyCode;
+            query["balance"] = balance.ToString();
 
-			var requestUri = $"exchangerate/platform/balance?{query}";
+            var requestUri = $"exchangerate/platform/balance?{query}";
 
-			var response = await _httpClient
-				.GetAsync(
-				   requestUri: requestUri,
-				   cancellationToken: cancellationToken)
-			   .ConfigureAwait(false);
+            var response = await _httpClient
+                .GetAsync(
+                   requestUri: requestUri,
+                   cancellationToken: cancellationToken)
+               .ConfigureAwait(false);
 
-			_ = response.EnsureSuccessStatusCode();
+            _ = response.EnsureSuccessStatusCode();
 
-			var contentJson = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+            var contentJson = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-			return JsonSerializer.Deserialize<ConvertPlatformBalanceResult>(contentJson, _SerializerOptions)!;
-		}
+            return JsonSerializer.Deserialize<ConvertPlatformBalanceResult>(contentJson, _SerializerOptions)!;
+        }
 
-		public async ValueTask<ConvertPlatformRoundsResult> ConvertPlatformRoundsAsync(
-					string gameProviderCode,
-			string currencyCode,
-			ConvertPlatformRoundsRequest request,
-			CancellationToken cancellationToken = default)
-		{
-			var query = HttpUtility.ParseQueryString(string.Empty);
-			query["gameProviderCode"] = gameProviderCode;
-			query["currencyCode"] = currencyCode;
+        public async ValueTask<ConvertPlatformRoundsResult> ConvertPlatformRoundsAsync(
+                    string gameProviderCode,
+            string currencyCode,
+            ConvertPlatformRoundsRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            query["gameProviderCode"] = gameProviderCode;
+            query["currencyCode"] = currencyCode;
 
-			var requestUri = $"exchangerate/platform/rounds?{query}";
+            var requestUri = $"exchangerate/platform/rounds?{query}";
 
-			var requestContent = new StringContent(
-				content: JsonSerializer.Serialize(request, _SerializerOptions),
-				encoding: Encoding.UTF8,
-				mediaType: MediaTypeHeaderValue.Parse(MediaTypeNames.Application.Json).MediaType);
+            var requestContent = new StringContent(
+                content: JsonSerializer.Serialize(request, _SerializerOptions),
+                encoding: Encoding.UTF8,
+                mediaType: MediaTypeHeaderValue.Parse(MediaTypeNames.Application.Json).MediaType);
 
-			var response = await _httpClient
-				.PostAsync(
-				   requestUri: requestUri,
-				   content: requestContent,
-				   cancellationToken: cancellationToken)
-			   .ConfigureAwait(false);
+            var response = await _httpClient
+                .PostAsync(
+                   requestUri: requestUri,
+                   content: requestContent,
+                   cancellationToken: cancellationToken)
+               .ConfigureAwait(false);
 
-			_ = response.EnsureSuccessStatusCode();
+            _ = response.EnsureSuccessStatusCode();
 
-			var contentJson = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+            var contentJson = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-			return JsonSerializer.Deserialize<ConvertPlatformRoundsResult>(contentJson, _SerializerOptions)!;
-		}
-	}
+            return JsonSerializer.Deserialize<ConvertPlatformRoundsResult>(contentJson, _SerializerOptions)!;
+        }
+    }
 }

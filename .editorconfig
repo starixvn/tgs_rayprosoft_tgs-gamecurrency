@@ -1,5 +1,10 @@
-# 如果要從更高的目錄繼承 .editorconfig 設定，請移除以下行
 root = true
+# 如果要從更高的目錄繼承 .editorconfig 設定，請移除以下行
+
+[Jenkinsfile]
+indent_size = 4
+indent_style = space
+tab_width = 4
 
 # C# 檔案
 [*.cs]
@@ -8,7 +13,7 @@ root = true
 
 # 縮排和間距
 indent_size = 4
-indent_style = tab
+indent_style = space
 tab_width = 4
 
 # 新行喜好設定
@@ -20,7 +25,7 @@ insert_final_newline = false
 # 組合管理 Using
 dotnet_separate_import_directive_groups = false
 dotnet_sort_system_directives_first = true
-file_header_template = unset
+file_header_template = 
 
 # this. 和 Me. 喜好設定
 dotnet_style_qualification_for_event = false
@@ -45,6 +50,7 @@ dotnet_style_require_accessibility_modifiers = for_non_interface_members
 dotnet_style_coalesce_expression = true
 dotnet_style_collection_initializer = true
 dotnet_style_explicit_tuple_names = true
+dotnet_style_namespace_match_folder = true
 dotnet_style_null_propagation = true
 dotnet_style_object_initializer = true
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
@@ -66,6 +72,10 @@ dotnet_code_quality_unused_parameters = all
 
 # 隱藏項目喜好設定
 dotnet_remove_unnecessary_suppression_exclusions = none
+
+# 新行喜好設定
+dotnet_style_allow_multiple_blank_lines_experimental = true
+dotnet_style_allow_statement_immediately_after_block_experimental = true
 
 #### C# 編碼慣例 ####
 
@@ -116,6 +126,11 @@ csharp_style_unused_value_expression_statement_preference = discard_variable:sug
 
 # 'using' 指示詞的喜好設定
 csharp_using_directive_placement = outside_namespace
+
+# 新行喜好設定
+csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = true
+csharp_style_allow_blank_lines_between_consecutive_braces_experimental = true
+csharp_style_allow_embedded_statements_on_same_line_experimental = true
 
 #### C# 格式化規則 ####
 
@@ -240,4 +255,9 @@ dotnet_naming_style.begins_with_underscore_camlcase.required_suffix =
 dotnet_naming_style.begins_with_underscore_camlcase.word_separator = 
 dotnet_naming_style.begins_with_underscore_camlcase.capitalization = camel_case
 
-dotnet_diagnostic.CA2254.severity = silent
+# ReSharper properties
+resharper_csharp_use_indent_from_vs = true
+resharper_wrap_object_and_collection_initializer_style = chop_always
+
+[*.{cs,vb}]
+end_of_line = crlf
