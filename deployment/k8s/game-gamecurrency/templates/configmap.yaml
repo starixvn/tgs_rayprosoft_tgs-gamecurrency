@@ -19,6 +19,12 @@ data:
             "CurrencyCode": "IDR",
             "GameProviderCurrencyCode": "IDR",
             "ExchangeRate": 1000
+          },
+          {
+            "GameProviderCode": "SABATF",
+            "CurrencyCode": "IDR",
+            "GameProviderCurrencyCode": "15",
+            "ExchangeRate": 1000
           }
         ]
       }
