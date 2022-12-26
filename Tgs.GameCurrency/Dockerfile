@@ -8,7 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BuildConfiguration=Release
 WORKDIR /src
-COPY ["NuGet.config", "."]
+COPY ["nuget.config", "."]
 COPY ["Tgs.GameCurrency/Tgs.GameCurrency.csproj", "Tgs.GameCurrency/"]
 RUN dotnet restore "Tgs.GameCurrency/Tgs.GameCurrency.csproj"
 COPY . .
