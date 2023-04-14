@@ -5,7 +5,7 @@ namespace Tgs.GameCurrency.IntegrationTests;
 
 public partial class GameCurrencyClientUnitTest
 {
-    [TestMethod]
+    [Fact]
     public async Task Game_Provider_Balance_CNY_Amount_1_Conversion_Platform_CNY_Amount_1()
     {
         var gameProviderCode = "AWC_PGS";
@@ -26,11 +26,11 @@ public partial class GameCurrencyClientUnitTest
             currencyCode,
             amount).ConfigureAwait(false);
 
-        Assert.IsNotNull(actual);
+        Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task Game_Provider_Balance_IDR_Amount_1_Conversion_Platform_IDR1000_Amount_1000()
     {
         var gameProviderCode = "AWC_PGS";
@@ -51,11 +51,11 @@ public partial class GameCurrencyClientUnitTest
             currencyCode,
             amount).ConfigureAwait(false);
 
-        Assert.IsNotNull(actual);
+        Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task Game_Provider_Balance_IDR1000_Amount_1_Conversion_Platform_IDR_Amount_0001M()
     {
         var gameProviderCode = "AWC_PGS";
@@ -76,7 +76,7 @@ public partial class GameCurrencyClientUnitTest
             currencyCode,
             amount).ConfigureAwait(false);
 
-        Assert.IsNotNull(actual);
+        Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
     }
 }
