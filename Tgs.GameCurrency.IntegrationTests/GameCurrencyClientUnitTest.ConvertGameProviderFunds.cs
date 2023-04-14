@@ -5,7 +5,7 @@ namespace Tgs.GameCurrency.IntegrationTests;
 
 public partial class GameCurrencyClientUnitTest
 {
-    [TestMethod]
+    [Fact]
     public async Task Platform_Fund_CNY_Amount_1_Convert_Game_Provider_CNY_Amount_1()
     {
         var gameProviderCode = "AWC_PGS";
@@ -26,11 +26,11 @@ public partial class GameCurrencyClientUnitTest
             currencyCode,
             amount).ConfigureAwait(false);
 
-        Assert.IsNotNull(actual);
+        Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task Platform_Fund_IDR_Amount_001M_Convert_Game_Provider_IDR1000_Amount_000001M()
     {
         var gameProviderCode = "AWC_PGS";
@@ -51,11 +51,11 @@ public partial class GameCurrencyClientUnitTest
             currencyCode,
             amount).ConfigureAwait(false);
 
-        Assert.IsNotNull(actual);
+        Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task Platform_Fund_IDR_Amount_1_Convert_Game_Provider_IDR1000_Amount_0001M()
     {
         var gameProviderCode = "AWC_PGS";
@@ -76,11 +76,11 @@ public partial class GameCurrencyClientUnitTest
             currencyCode,
             amount).ConfigureAwait(false);
 
-        Assert.IsNotNull(actual);
+        Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task Platform_Fund_IDR1000_Amount_001_Convert_Game_Provider_IDR_Amount_10()
     {
         var gameProviderCode = "AWC_PGS";
@@ -101,11 +101,11 @@ public partial class GameCurrencyClientUnitTest
             currencyCode,
             amount).ConfigureAwait(false);
 
-        Assert.IsNotNull(actual);
+        Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task Platform_Fund_IDR1000_Amount_1_Convert_Game_Provider_IDR_Amount_1000()
     {
         var gameProviderCode = "AWC_PGS";
@@ -126,7 +126,7 @@ public partial class GameCurrencyClientUnitTest
             currencyCode,
             amount).ConfigureAwait(false);
 
-        Assert.IsNotNull(actual);
+        Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
     }
 }

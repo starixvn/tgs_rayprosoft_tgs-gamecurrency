@@ -1,11 +1,10 @@
-using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using OpenTelemetry.Exporter;
 
 namespace Tgs.GameCurrency.IntegrationTests;
 
-[TestClass]
 public partial class GameCurrencyClientUnitTest
 {
     private static WebApplicationFactory<Program> CreateTestSettingSite(Action<IServiceCollection>? configureServices = null)
