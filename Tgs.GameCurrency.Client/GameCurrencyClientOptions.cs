@@ -1,7 +1,6 @@
-﻿namespace Tgs.GameCurrency.Client
+﻿namespace Tgs.GameCurrency.Client;
+
+public class GameCurrencyClientOptions
 {
-    public class GameCurrencyClientOptions
-    {
-        public Uri BaseUrl { get; set; } = default!;
-    }
+    public Uri BaseUrl { get; set; } = default!;
 }
