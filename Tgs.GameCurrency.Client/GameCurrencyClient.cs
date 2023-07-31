@@ -66,12 +66,16 @@ internal class GameCurrencyClient : IGameCurrencyClient
         string gameProviderCode,
         string currencyCode,
         decimal balance,
+        decimal freeBalance,
+        decimal outstandingBalance,
         CancellationToken cancellationToken = default)
     {
         var query = HttpUtility.ParseQueryString(string.Empty);
         query["gameProviderCode"] = gameProviderCode;
         query["currencyCode"] = currencyCode;
         query["balance"] = balance.ToString();
+        query["freeBalance"] = freeBalance.ToString();
+        query["outstandingBalance"] = outstandingBalance.ToString();
 
         var requestUri = $"exchangerate/platform/balance?{query}";
 

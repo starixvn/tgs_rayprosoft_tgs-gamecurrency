@@ -10,10 +10,14 @@ public partial class GameCurrencyClientUnitTest
     {
         var gameProviderCode = "AWC_PGS";
         var currencyCode = "CNY";
-        var amount = 1m;
+        var balance = 10m;
+        var freeBalance = 1m;
+        var outstandingBalance = 9m;
         var expected = new ConvertPlatformBalanceResult(
             ExchangeRate: 1,
-            Balance: 1);
+            Balance: balance,
+            FreeBalance: freeBalance,
+            OutstandingBalance: outstandingBalance);
 
         var web = CreateTestSettingSite();
 
@@ -21,10 +25,14 @@ public partial class GameCurrencyClientUnitTest
 
         var sut = new GameCurrencyClient(httpClient);
 
-        var actual = await sut.ConvertPlatformBalanceAsync(
+        var actual = await sut
+            .ConvertPlatformBalanceAsync(
             gameProviderCode,
             currencyCode,
-            amount).ConfigureAwait(false);
+            balance,
+            freeBalance,
+            outstandingBalance)
+            .ConfigureAwait(false);
 
         Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
@@ -35,10 +43,14 @@ public partial class GameCurrencyClientUnitTest
     {
         var gameProviderCode = "AWC_PGS";
         var currencyCode = "IDR";
-        var amount = 1m;
+        var balance = 10m;
+        var freeBalance = 1m;
+        var outstandingBalance = 9m;
         var expected = new ConvertPlatformBalanceResult(
             ExchangeRate: 1000,
-            Balance: 1000m);
+            Balance: 10000m,
+            FreeBalance: 1000m,
+            OutstandingBalance: 9000m);
 
         var web = CreateTestSettingSite();
 
@@ -46,10 +58,14 @@ public partial class GameCurrencyClientUnitTest
 
         var sut = new GameCurrencyClient(httpClient);
 
-        var actual = await sut.ConvertPlatformBalanceAsync(
+        var actual = await sut
+            .ConvertPlatformBalanceAsync(
             gameProviderCode,
             currencyCode,
-            amount).ConfigureAwait(false);
+            balance,
+            freeBalance,
+            outstandingBalance)
+            .ConfigureAwait(false);
 
         Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
@@ -60,10 +76,14 @@ public partial class GameCurrencyClientUnitTest
     {
         var gameProviderCode = "AWC_PGS";
         var currencyCode = "IDR_1000";
-        var amount = 1m;
+        var balance = 10m;
+        var freeBalance = 1m;
+        var outstandingBalance = 9m;
         var expected = new ConvertPlatformBalanceResult(
             ExchangeRate: 0.001m,
-            Balance: 0.001m);
+            Balance: 0.01m,
+            FreeBalance: 0.001m,
+            OutstandingBalance: 0.009m);
 
         var web = CreateTestSettingSite();
 
@@ -71,10 +91,14 @@ public partial class GameCurrencyClientUnitTest
 
         var sut = new GameCurrencyClient(httpClient);
 
-        var actual = await sut.ConvertPlatformBalanceAsync(
+        var actual = await sut
+            .ConvertPlatformBalanceAsync(
             gameProviderCode,
             currencyCode,
-            amount).ConfigureAwait(false);
+            balance,
+            freeBalance,
+            outstandingBalance)
+            .ConfigureAwait(false);
 
         Assert.NotNull(actual);
         _ = expected.Should().Be(actual);

@@ -9,9 +9,11 @@ public interface IGameCurrencyClient
         CancellationToken cancellationToken = default);
 
     public ValueTask<ConvertPlatformBalanceResult> ConvertPlatformBalanceAsync(
-                        string gameProviderCode,
+        string gameProviderCode,
         string currencyCode,
         decimal balance,
+        decimal freeBalance,
+        decimal outstandingBalance,
         CancellationToken cancellationToken = default);
 
     public ValueTask<ConvertPlatformRoundsResult> ConvertPlatformRoundsAsync(

@@ -40,18 +40,24 @@ public class ExchangeRateController : ControllerBase
     /// <param name="gameProviderCode">The game provider code.</param>
     /// <param name="currencyCode">The currency code.</param>
     /// <param name="balance">The balance.</param>
+    /// <param name="freeBalance">The free balance.</param>
+    /// <param name="outstandingBalance">The outstanding balance.</param>
     /// <returns></returns>
     [HttpGet("platform/balance", Name = "ConvertPlatformBalance")]
     public ConvertPlatformBalanceResultViewModel ConvertPlatformBalance(
         [FromQuery] string gameProviderCode,
         [FromQuery] string currencyCode,
-        [FromQuery] decimal balance)
+        [FromQuery] decimal balance,
+        [FromQuery] decimal freeBalance,
+        [FromQuery] decimal outstandingBalance)
     {
         var exchangeRate = _gameProviderExchangeRateService.GetExchangeRates(gameProviderCode, currencyCode);
 
         return new ConvertPlatformBalanceResultViewModel(
                     ExchangeRate: exchangeRate,
-                    Balance: _gameProviderExchangeRateService.ConvertPlatformBalance(exchangeRate, balance));
+                    Balance: _gameProviderExchangeRateService.ConvertPlatformBalance(exchangeRate, balance),
+                    FreeBalance: _gameProviderExchangeRateService.ConvertPlatformBalance(exchangeRate, freeBalance),
+                    OutstandingBalance: _gameProviderExchangeRateService.ConvertPlatformBalance(exchangeRate, outstandingBalance));
     }
 
     /// <summary>

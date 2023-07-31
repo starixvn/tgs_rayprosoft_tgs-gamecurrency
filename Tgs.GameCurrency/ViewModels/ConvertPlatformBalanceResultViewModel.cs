@@ -2,4 +2,6 @@
 
 public record ConvertPlatformBalanceResultViewModel(
     decimal ExchangeRate,
-    decimal Balance);
+    decimal Balance,
+    decimal FreeBalance,
+    decimal OutstandingBalance);
