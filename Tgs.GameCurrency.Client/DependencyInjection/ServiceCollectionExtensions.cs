@@ -9,16 +9,16 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         Action<GameCurrencyClientOptions, IServiceProvider> configure)
         => services
-            .AddOptions<GameCurrencyClientOptions>()
-            .Configure(configure)
-            .Services
-            .AddHttpClient<IGameCurrencyClient, GameCurrencyClient>()
-            .ConfigureHttpClient((sp, httpClient) =>
-            {
-                var options = sp.GetRequiredService<IOptions<GameCurrencyClientOptions>>().Value;
-                httpClient.BaseAddress = options.BaseUrl;
-            })
-            .AddHttpMessageHandler<LoggingHandler>()
-            .Services
-            .AddTransient<LoggingHandler>();
+        .AddOptions<GameCurrencyClientOptions>()
+        .Configure(configure)
+        .Services
+        .AddHttpClient<IGameCurrencyClient, GameCurrencyClient>()
+        .ConfigureHttpClient((sp, httpClient) =>
+        {
+            var options = sp.GetRequiredService<IOptions<GameCurrencyClientOptions>>().Value;
+            httpClient.BaseAddress = options.BaseUrl;
+        })
+        .AddHttpMessageHandler<LoggingHandler>()
+        .Services
+        .AddTransient<LoggingHandler>();
 }

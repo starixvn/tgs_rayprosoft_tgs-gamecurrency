@@ -95,12 +95,27 @@ internal class GameCurrencyClient : IGameCurrencyClient
     public async ValueTask<ConvertPlatformRoundsResult> ConvertPlatformRoundsAsync(
         string gameProviderCode,
         string currencyCode,
-        ConvertPlatformRoundsRequest request,
+        decimal bet,
+        decimal validBet,
+        decimal settle,
+        decimal commission,
+        decimal turnover,
+        decimal winLoss,
         CancellationToken cancellationToken = default)
     {
         var query = HttpUtility.ParseQueryString(string.Empty);
         query["gameProviderCode"] = gameProviderCode;
         query["currencyCode"] = currencyCode;
+
+        var request = new
+        {
+            Bet = bet,
+            ValidBet = validBet,
+            Settle = settle,
+            Commission = commission,
+            Turnover = turnover,
+            WinLoss = winLoss
+        };
 
         var requestUri = $"exchangerate/platform/rounds?{query}";
 

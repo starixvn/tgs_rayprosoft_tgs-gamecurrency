@@ -19,6 +19,11 @@ public interface IGameCurrencyClient
     public ValueTask<ConvertPlatformRoundsResult> ConvertPlatformRoundsAsync(
         string gameProviderCode,
         string currencyCode,
-        ConvertPlatformRoundsRequest request,
+        decimal bet,
+        decimal validBet,
+        decimal settle,
+        decimal commission,
+        decimal turnover,
+        decimal winLoss,
         CancellationToken cancellationToken = default);
 }
