@@ -80,7 +80,8 @@ push-docker-image:
     untracked: true   
     policy: pull
   script:
-    - dotnet publish "${projectPath:=$project}" \
+    #- dotnet build "Tgs.GameCurrency/Tgs.GameCurrency.csproj" -c $BuildConfiguration -t:ContainerBuild -p:DockerfileTag="$ImageName:$Tag" --no-restore
+    - dotnet publish "Tgs.GameCurrency\Tgs.GameCurrency.csproj" \
         --os linux \
         --arch x64 \
         /t:PublishContainer \
