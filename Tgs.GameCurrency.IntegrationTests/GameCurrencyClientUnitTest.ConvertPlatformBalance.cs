@@ -25,14 +25,12 @@ public partial class GameCurrencyClientUnitTest
 
         var sut = new GameCurrencyClient(httpClient);
 
-        var actual = await sut
-            .ConvertPlatformBalanceAsync(
-            gameProviderCode,
-            currencyCode,
-            balance,
-            freeBalance,
-            outstandingBalance)
-            .ConfigureAwait(false);
+        var actual = await sut.ConvertPlatformBalanceAsync(
+            gameProviderCode: gameProviderCode,
+            currencyCode: currencyCode,
+            balance: balance,
+            freeBalance: freeBalance,
+            outstandingBalance: outstandingBalance);
 
         Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
@@ -58,14 +56,12 @@ public partial class GameCurrencyClientUnitTest
 
         var sut = new GameCurrencyClient(httpClient);
 
-        var actual = await sut
-            .ConvertPlatformBalanceAsync(
-            gameProviderCode,
-            currencyCode,
-            balance,
-            freeBalance,
-            outstandingBalance)
-            .ConfigureAwait(false);
+        var actual = await sut.ConvertPlatformBalanceAsync(
+            gameProviderCode: gameProviderCode,
+            currencyCode: currencyCode,
+            balance: balance,
+            freeBalance: freeBalance,
+            outstandingBalance: outstandingBalance);
 
         Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
@@ -91,14 +87,12 @@ public partial class GameCurrencyClientUnitTest
 
         var sut = new GameCurrencyClient(httpClient);
 
-        var actual = await sut
-            .ConvertPlatformBalanceAsync(
-            gameProviderCode,
-            currencyCode,
-            balance,
-            freeBalance,
-            outstandingBalance)
-            .ConfigureAwait(false);
+        var actual = await sut.ConvertPlatformBalanceAsync(
+            gameProviderCode: gameProviderCode,
+            currencyCode: currencyCode,
+            balance: balance,
+            freeBalance: freeBalance,
+            outstandingBalance: outstandingBalance);
 
         Assert.NotNull(actual);
         _ = expected.Should().Be(actual);

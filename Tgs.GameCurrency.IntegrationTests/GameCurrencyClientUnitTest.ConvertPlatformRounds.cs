@@ -32,8 +32,7 @@ public partial class GameCurrencyClientUnitTest
 
         var sut = new GameCurrencyClient(httpClient);
 
-        var actual = await sut
-            .ConvertPlatformRoundsAsync(
+        var actual = await sut.ConvertPlatformRoundsAsync(
             gameProviderCode: gameProviderCode,
             currencyCode: currencyCode,
             bet: bet,
@@ -41,8 +40,7 @@ public partial class GameCurrencyClientUnitTest
             settle: settle,
             commission: commission,
             turnover: turnover,
-            winLoss: winLoss)
-            .ConfigureAwait(false);
+            winLoss: winLoss);
 
         Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
@@ -75,8 +73,7 @@ public partial class GameCurrencyClientUnitTest
 
         var sut = new GameCurrencyClient(httpClient);
 
-        var actual = await sut
-            .ConvertPlatformRoundsAsync(
+        var actual = await sut.ConvertPlatformRoundsAsync(
             gameProviderCode: gameProviderCode,
             currencyCode: currencyCode,
             bet: bet,
@@ -84,8 +81,7 @@ public partial class GameCurrencyClientUnitTest
             settle: settle,
             commission: commission,
             turnover: turnover,
-            winLoss: winLoss)
-            .ConfigureAwait(false);
+            winLoss: winLoss);
 
         Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
@@ -118,8 +114,7 @@ public partial class GameCurrencyClientUnitTest
 
         var sut = new GameCurrencyClient(httpClient);
 
-        var actual = await sut
-            .ConvertPlatformRoundsAsync(
+        var actual = await sut.ConvertPlatformRoundsAsync(
             gameProviderCode: gameProviderCode,
             currencyCode: currencyCode,
             bet: bet,
@@ -127,8 +122,7 @@ public partial class GameCurrencyClientUnitTest
             settle: settle,
             commission: commission,
             turnover: turnover,
-            winLoss: winLoss)
-            .ConfigureAwait(false);
+            winLoss: winLoss);
 
         Assert.NotNull(actual);
         _ = expected.Should().Be(actual);

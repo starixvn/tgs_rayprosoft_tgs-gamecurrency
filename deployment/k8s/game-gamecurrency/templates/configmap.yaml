@@ -20,6 +20,12 @@ data:
             "ExchangeRate": 1000
           },
           {
+            "GameProviderCode": "AWC_PGS",
+            "CurrencyCode": "VND",
+            "GameProviderCurrencyCode": "VND",
+            "ExchangeRate": 1000
+          },
+          {
             "GameProviderCode": "BTI",
             "CurrencyCode": "IDR",
             "GameProviderCurrencyCode": "IDR",

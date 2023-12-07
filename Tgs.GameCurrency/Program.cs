@@ -8,11 +8,9 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Tgs.GameCurrency;
 
-var builder = WebApplication.CreateBuilder(args);
+var filterInstrumentations = new[] { "html", "ico", "png", "jpg" };
 
-builder.Configuration
-    .AddJsonFile("/config/appsettings.json", true)
-    .AddEnvironmentVariables();
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging
     .AddOpenTelemetry(options =>
@@ -90,8 +88,9 @@ builder.Services
             && !httpContext.Request.Path.StartsWithSegments("/profiler/")
             && !httpContext.Request.Path.StartsWithSegments("/hangfire")
             && !httpContext.Request.Path.StartsWithSegments("/metrics")
-            && !new[] { "html", "ico", "png", "jpg" }.Any(
-                ext => httpContext.Request.Path.Value.EndsWith($".{ext}")));
+           && !filterInstrumentations.Any(ext => httpContext.Request.Path.Value.EndsWith($".{ext}")))
+    .AddInterceptionService()
+    .AddServiceUtiltiyInterceptors();
 
 builder.Services.AddHealthChecks();
 

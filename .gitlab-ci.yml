@@ -80,8 +80,13 @@ push-docker-image:
     untracked: true   
     policy: pull
   script:
-    - export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
-    - dotnet build "Tgs.GameCurrency/Tgs.GameCurrency.csproj" -c $BuildConfiguration -t:ContainerBuild -p:DockerfileTag="$ImageName:$Tag" --no-restore
+    - dotnet publish "${projectPath:=$project}" \
+        --os linux \
+        --arch x64 \
+        /t:PublishContainer \
+        -c $BuildConfiguration \
+        /p:ContainerRepository=${image:=$ImageName} \
+        /p:ContainerImageTag=${imageTag:=$Tag}
     - docker push $ImageName:$Tag
 
 push-k8s-template:

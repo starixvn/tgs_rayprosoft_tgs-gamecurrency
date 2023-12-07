@@ -22,9 +22,9 @@ public partial class GameCurrencyClientUnitTest
         var sut = new GameCurrencyClient(httpClient);
 
         var actual = await sut.ConvertGameProviderFundsAsync(
-            gameProviderCode,
-            currencyCode,
-            amount).ConfigureAwait(false);
+            gameProviderCode: gameProviderCode,
+            currencyCode: currencyCode,
+            amount: amount);
 
         Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
@@ -47,9 +47,9 @@ public partial class GameCurrencyClientUnitTest
         var sut = new GameCurrencyClient(httpClient);
 
         var actual = await sut.ConvertGameProviderFundsAsync(
-            gameProviderCode,
-            currencyCode,
-            amount).ConfigureAwait(false);
+            gameProviderCode: gameProviderCode,
+            currencyCode: currencyCode,
+            amount: amount); 
 
         Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
@@ -72,9 +72,9 @@ public partial class GameCurrencyClientUnitTest
         var sut = new GameCurrencyClient(httpClient);
 
         var actual = await sut.ConvertGameProviderFundsAsync(
-            gameProviderCode,
-            currencyCode,
-            amount).ConfigureAwait(false);
+            gameProviderCode: gameProviderCode,
+            currencyCode: currencyCode,
+            amount: amount);
 
         Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
@@ -97,9 +97,9 @@ public partial class GameCurrencyClientUnitTest
         var sut = new GameCurrencyClient(httpClient);
 
         var actual = await sut.ConvertGameProviderFundsAsync(
-            gameProviderCode,
-            currencyCode,
-            amount).ConfigureAwait(false);
+            gameProviderCode: gameProviderCode,
+            currencyCode: currencyCode,
+            amount: amount);
 
         Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
@@ -122,9 +122,9 @@ public partial class GameCurrencyClientUnitTest
         var sut = new GameCurrencyClient(httpClient);
 
         var actual = await sut.ConvertGameProviderFundsAsync(
-            gameProviderCode,
-            currencyCode,
-            amount).ConfigureAwait(false);
+            gameProviderCode: gameProviderCode,
+            currencyCode: currencyCode,
+            amount: amount);
 
         Assert.NotNull(actual);
         _ = expected.Should().Be(actual);
