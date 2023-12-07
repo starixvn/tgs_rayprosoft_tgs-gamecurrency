@@ -85,8 +85,8 @@ push-docker-image:
         --arch x64 \
         /t:PublishContainer \
         -c $BuildConfiguration \
-        /p:ContainerRepository=${image:=$ImageName} \
-        /p:ContainerImageTag=${imageTag:=$Tag}
+        /p:ContainerRepository=$ImageName \
+        /p:ContainerImageTag=$Tag
     - docker push $ImageName:$Tag
 
 push-k8s-template:
