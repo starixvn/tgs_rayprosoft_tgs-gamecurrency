@@ -81,7 +81,7 @@ push-docker-image:
     policy: pull
   script:
     #- dotnet build "Tgs.GameCurrency/Tgs.GameCurrency.csproj" -c $BuildConfiguration -t:ContainerBuild -p:DockerfileTag="$ImageName:$Tag" --no-restore
-    - dotnet publish "Tgs.GameCurrency" \
+    - dotnet publish "Tgs.GameCurrency/" \
         --os linux \
         --arch x64 \
         /t:PublishContainer \
