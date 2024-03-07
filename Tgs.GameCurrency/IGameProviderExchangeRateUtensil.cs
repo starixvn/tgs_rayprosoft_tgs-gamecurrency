@@ -1,6 +1,6 @@
 ﻿namespace Tgs.GameCurrency;
 
-public interface IGameProviderExchangeRateService
+public interface IGameProviderExchangeRateUtensil
 {
     decimal ConvertGameProviderFunds(decimal exchangeRate, decimal amount);
 

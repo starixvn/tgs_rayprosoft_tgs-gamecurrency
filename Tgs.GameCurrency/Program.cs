@@ -2,7 +2,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
-using OpenTelemetry.Instrumentation.AspNetCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -59,7 +58,7 @@ builder.Services
     .AddOptions<GameCurrencySettingsOption>()
     .Configure((options) => builder.Configuration.GetSection("GameCurrencySettings").Bind(options))
     .Services
-    .AddSingleton<IGameProviderExchangeRateService, GameProviderExchangeRateService>();
+    .AddSingleton<IGameProviderExchangeRateUtensil, GameProviderExchangeRateUtensil>();
 
 builder.Services
     .AddOpenTelemetry()

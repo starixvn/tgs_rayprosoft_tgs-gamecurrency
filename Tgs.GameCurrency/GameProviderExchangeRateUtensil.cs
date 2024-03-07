@@ -2,14 +2,9 @@
 
 namespace Tgs.GameCurrency;
 
-internal class GameProviderExchangeRateService : IGameProviderExchangeRateService
+internal class GameProviderExchangeRateUtensil(IOptions<GameCurrencySettingsOption> options) : IGameProviderExchangeRateUtensil
 {
-    private readonly IEnumerable<GameProviderExchangeRate> _gameProviderExchangeRates;
-
-    public GameProviderExchangeRateService(IOptions<GameCurrencySettingsOption> options)
-    {
-        _gameProviderExchangeRates = options.Value.GameProviderExchangeRates ?? Enumerable.Empty<GameProviderExchangeRate>();
-    }
+    private readonly IEnumerable<GameProviderExchangeRate> _gameProviderExchangeRates = options.Value.GameProviderExchangeRates ?? Enumerable.Empty<GameProviderExchangeRate>();
 
     public decimal ConvertGameProviderFunds(decimal exchangeRate, decimal amount)
         => amount == 0 ? amount : decimal.Round(amount / exchangeRate, 6, MidpointRounding.ToZero);
@@ -18,7 +13,7 @@ internal class GameProviderExchangeRateService : IGameProviderExchangeRateServic
         => balance == 0 ? balance : decimal.Round(balance * exchangeRate, 6, MidpointRounding.ToZero);
 
     public decimal ConvertPlatformRounds(decimal exchangeRate, decimal amount)
-                => amount == 0 ? amount : decimal.Round(amount * exchangeRate, 6, MidpointRounding.ToZero);
+        => amount == 0 ? amount : decimal.Round(amount * exchangeRate, 6, MidpointRounding.ToZero);
 
     public decimal GetExchangeRates(string gameProviderCode, string currencyCode)
         => _gameProviderExchangeRates

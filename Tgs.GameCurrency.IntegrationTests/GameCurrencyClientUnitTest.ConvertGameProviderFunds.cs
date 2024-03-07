@@ -49,7 +49,7 @@ public partial class GameCurrencyClientUnitTest
         var actual = await sut.ConvertGameProviderFundsAsync(
             gameProviderCode: gameProviderCode,
             currencyCode: currencyCode,
-            amount: amount); 
+            amount: amount);
 
         Assert.NotNull(actual);
         _ = expected.Should().Be(actual);

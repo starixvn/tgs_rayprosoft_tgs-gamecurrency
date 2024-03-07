@@ -32,13 +32,13 @@ public partial class GameCurrencyClientUnitTest
                         {
                             exporterOptions.GameProviderExchangeRates = new GameProviderExchangeRate[]
                             {
-                                new GameProviderExchangeRate()
+                                new()
                                 {
                                     GameProviderCode="AWC_PGS",
                                     CurrencyCode="IDR",
                                     ExchangeRate=1000
                                 },
-                                new GameProviderExchangeRate()
+                                new()
                                 {
                                     GameProviderCode="AWC_PGS",
                                     CurrencyCode="IDR_1000",

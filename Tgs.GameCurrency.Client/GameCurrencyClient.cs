@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
@@ -36,11 +37,7 @@ internal class GameCurrencyClient : IGameCurrencyClient
     public GameCurrencyClient(HttpClient httpClient)
       => _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
 
-    public async ValueTask<ConvertGameProviderFundsResult> ConvertGameProviderFundsAsync(
-        string gameProviderCode,
-        string currencyCode,
-        decimal amount,
-        CancellationToken cancellationToken = default)
+    public async ValueTask<ConvertGameProviderFundsResult> ConvertGameProviderFundsAsync(string gameProviderCode, string currencyCode, decimal amount, CancellationToken cancellationToken = default)
     {
         var query = HttpUtility.ParseQueryString(string.Empty);
         query["gameProviderCode"] = gameProviderCode;
@@ -62,13 +59,7 @@ internal class GameCurrencyClient : IGameCurrencyClient
         return JsonSerializer.Deserialize<ConvertGameProviderFundsResult>(contentJson, _SerializerOptions)!;
     }
 
-    public async ValueTask<ConvertPlatformBalanceResult> ConvertPlatformBalanceAsync(
-        string gameProviderCode,
-        string currencyCode,
-        decimal balance,
-        decimal freeBalance,
-        decimal outstandingBalance,
-        CancellationToken cancellationToken = default)
+    public async ValueTask<ConvertPlatformBalanceResult> ConvertPlatformBalanceAsync(string gameProviderCode, string currencyCode, decimal balance, decimal freeBalance, decimal outstandingBalance, CancellationToken cancellationToken = default)
     {
         var query = HttpUtility.ParseQueryString(string.Empty);
         query["gameProviderCode"] = gameProviderCode;
@@ -92,16 +83,7 @@ internal class GameCurrencyClient : IGameCurrencyClient
         return JsonSerializer.Deserialize<ConvertPlatformBalanceResult>(contentJson, _SerializerOptions)!;
     }
 
-    public async ValueTask<ConvertPlatformRoundsResult> ConvertPlatformRoundsAsync(
-        string gameProviderCode,
-        string currencyCode,
-        decimal bet,
-        decimal validBet,
-        decimal settle,
-        decimal commission,
-        decimal turnover,
-        decimal winLoss,
-        CancellationToken cancellationToken = default)
+    public async ValueTask<ConvertPlatformRoundsResult> ConvertPlatformRoundsAsync(string gameProviderCode, string currencyCode, decimal bet, decimal validBet, decimal settle, decimal commission, decimal turnover, decimal winLoss, CancellationToken cancellationToken = default)
     {
         var query = HttpUtility.ParseQueryString(string.Empty);
         query["gameProviderCode"] = gameProviderCode;
@@ -136,5 +118,26 @@ internal class GameCurrencyClient : IGameCurrencyClient
         var contentJson = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
         return JsonSerializer.Deserialize<ConvertPlatformRoundsResult>(contentJson, _SerializerOptions)!;
+    }
+
+    public async ValueTask<decimal> GetExchangeRate(string gameProviderCode, string currencyCode, CancellationToken cancellationToken = default)
+    {
+        var path = new Uri(_httpClient.BaseAddress!, $"/exchangerate/{gameProviderCode}/{currencyCode}");
+        var builder = new UriBuilder(path);
+        var query = HttpUtility.ParseQueryString(builder.Query);
+
+        builder.Query = query.ToString();
+        string url = builder.ToString();
+
+        var response = await _httpClient.GetAsync(
+            requestUri: url.ToString(),
+            cancellationToken: cancellationToken)
+            .ConfigureAwait(false);
+
+        _ = response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<decimal>(
+            _SerializerOptions,
+            cancellationToken).ConfigureAwait(false);
     }
 }
