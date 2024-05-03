@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Tgs.GameCurrency.IntegrationTests")]
+[assembly: InternalsVisibleTo("Tgs.GameCurrency.IntegrationTest")]

@@ -2,5 +2,5 @@
 
 public class GameCurrencySettingsOption
 {
-    public IEnumerable<GameProviderExchangeRate> GameProviderExchangeRates { get; set; } = default!;
+	public IEnumerable<GameProviderExchangeRate> GameProviderExchangeRates { get; set; } = default!;
 }

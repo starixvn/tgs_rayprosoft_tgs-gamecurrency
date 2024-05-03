@@ -1,5 +1,4 @@
 ﻿using System.Net.Mime;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using OpenTelemetry.Metrics;
@@ -12,83 +11,76 @@ var filterInstrumentations = new[] { "html", "ico", "png", "jpg" };
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging
-    .AddOpenTelemetry(options =>
-    {
-        options.IncludeFormattedMessage = true;
-        options.ParseStateValues = true;
-        _ = options.AddFluentdForwardExporter(fluentOptions =>
-        {
-            var nodeIp = builder.Configuration.GetValue<string>("NODE_IP")!;
-            fluentOptions.Host = nodeIp;
-            fluentOptions.Tag = builder.Configuration.GetValue<string>("OTEL_SERVICE_NAME")!;
-            fluentOptions.UseMessagePack();
-        });
-    });
+	.AddOpenTelemetry(options =>
+	{
+		options.IncludeFormattedMessage = true;
+		options.ParseStateValues = true;
+		_ = options.AddFluentdForwardExporter(fluentOptions =>
+		{
+			var nodeIp = builder.Configuration.GetValue<string>("NODE_IP")!;
+			fluentOptions.Host = nodeIp;
+			fluentOptions.Tag = builder.Configuration.GetValue<string>("OTEL_SERVICE_NAME")!;
+			fluentOptions.UseMessagePack();
+		});
+	});
 
 // Add services to the container.
 
 builder.Services
-    .AddRouting(options => options.LowercaseUrls = true)
-    .AddControllers(options =>
-    {
-        options.Filters.Add(new ProducesAttribute(MediaTypeNames.Application.Json));
-        options.Filters.Add(new ConsumesAttribute(MediaTypeNames.Application.Json));
-    })
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    });
+	.AddRouting(options => options.LowercaseUrls = true)
+	.AddControllers(options =>
+	{
+		options.Filters.Add(new ProducesAttribute(MediaTypeNames.Application.Json));
+		options.Filters.Add(new ConsumesAttribute(MediaTypeNames.Application.Json));
+	})
+	.AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    var xmlFileNames = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.xml");
-    foreach (var xmlFileName in xmlFileNames)
-    {
-        c.IncludeXmlComments(xmlFileName);
-    }
+	foreach (var xmlFileName in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.xml"))
+	{
+		c.IncludeXmlComments(xmlFileName);
+	}
 });
 
-var gameCurrencySettings = builder.Configuration.GetSection("GameCurrencySettings").Get<GameCurrencySettingsOption>();
-
-Console.WriteLine(JsonSerializer.Serialize(gameCurrencySettings));
+builder.Services
+	.AddOptions<GameCurrencySettingsOption>()
+	.Configure((options) => builder.Configuration.GetSection("GameCurrencySettings").Bind(options))
+	.Services
+	.AddSingleton<IGameProviderExchangeRateUtensil, GameProviderExchangeRateUtensil>();
 
 builder.Services
-    .AddOptions<GameCurrencySettingsOption>()
-    .Configure((options) => builder.Configuration.GetSection("GameCurrencySettings").Bind(options))
-    .Services
-    .AddSingleton<IGameProviderExchangeRateUtensil, GameProviderExchangeRateUtensil>();
-
-builder.Services
-    .AddOpenTelemetry()
-    .WithTracing(builder => builder
-        .SetResourceBuilder(ResourceBuilder.CreateDefault()
-            .AddEnvironmentVariableDetector())
-        .AddSource("Tgs.*")
-        .AddSource("TGS.*")
-        .AddAspNetCoreInstrumentation(options => options.Filter =
-            httpContext => !httpContext.Request.Path.HasValue
-            || !httpContext.Request.Path.StartsWithSegments("/swagger")
-            && !httpContext.Request.Path.StartsWithSegments("/healthz")
-            && !httpContext.Request.Path.StartsWithSegments("/profiler/")
-            && !httpContext.Request.Path.StartsWithSegments("/hangfire")
-            && !httpContext.Request.Path.StartsWithSegments("/metrics")
-            && !filterInstrumentations.Any(ext => httpContext.Request.Path.Value.EndsWith($".{ext}")))
-        .AddHttpClientInstrumentation()
-        .AddGrpcClientInstrumentation()
-        .AddGrpcCoreInstrumentation()
-        .AddEntityFrameworkCoreInstrumentation(options => options.SetDbStatementForText = true)
-        .AddOtlpExporter())
-    .WithMetrics(meterBuiler => meterBuiler
-    .SetResourceBuilder(ResourceBuilder.CreateDefault()
-        .AddEnvironmentVariableDetector())
-        .AddRuntimeInstrumentation()
-        .AddAspNetCoreInstrumentation()
-        .AddOtlpExporter())
-    .Services
-    .AddInterceptionService()
-    .AddServiceUtiltiyInterceptors();
+	.AddOpenTelemetry()
+	.WithTracing(builder => builder
+		.SetResourceBuilder(ResourceBuilder.CreateDefault()
+			.AddEnvironmentVariableDetector())
+		.AddSource("Tgs.*")
+		.AddSource("TGS.*")
+		.AddSource("Valhalla.*")
+		.AddAspNetCoreInstrumentation(options => options.Filter =
+			httpContext => !httpContext.Request.Path.HasValue
+			|| !httpContext.Request.Path.StartsWithSegments("/swagger")
+			&& !httpContext.Request.Path.StartsWithSegments("/healthz")
+			&& !httpContext.Request.Path.StartsWithSegments("/profiler/")
+			&& !httpContext.Request.Path.StartsWithSegments("/hangfire")
+			&& !httpContext.Request.Path.StartsWithSegments("/metrics")
+			&& !filterInstrumentations.Any(ext => httpContext.Request.Path.Value.EndsWith($".{ext}")))
+		.AddHttpClientInstrumentation()
+		.AddGrpcClientInstrumentation()
+		.AddGrpcCoreInstrumentation()
+		.AddEntityFrameworkCoreInstrumentation(options => options.SetDbStatementForText = true)
+		.AddOtlpExporter())
+	.WithMetrics(meterBuiler => meterBuiler
+	.SetResourceBuilder(ResourceBuilder.CreateDefault()
+		.AddEnvironmentVariableDetector())
+		.AddRuntimeInstrumentation()
+		.AddAspNetCoreInstrumentation()
+		.AddOtlpExporter())
+	.Services
+	.AddInterceptionService()
+	.AddServiceUtiltiyInterceptors();
 
 builder.Services.AddHealthChecks();
 
