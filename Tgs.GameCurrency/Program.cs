@@ -97,4 +97,6 @@ app.MapControllers();
 app.MapHealthChecks("/healthz");
 app.MapHealthChecks("/");
 
+SentrySdk.CaptureMessage($"Started result ReportAggregate service at {DateTime.Now.ToString()}");
+
 app.Run();
