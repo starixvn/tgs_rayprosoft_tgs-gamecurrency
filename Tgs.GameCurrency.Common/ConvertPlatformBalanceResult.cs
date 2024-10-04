@@ -1,5 +1,4 @@
-﻿namespace Tgs.GameCurrency.Client;
-
+﻿namespace Tgs.GameCurrency.Common;
 public record ConvertPlatformBalanceResult(
 	decimal ExchangeRate,
 	decimal Balance,

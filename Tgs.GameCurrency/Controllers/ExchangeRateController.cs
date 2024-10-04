@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Tgs.GameCurrency.ViewModels;
 
 namespace Tgs.GameCurrency.Controllers;
 
@@ -15,14 +14,14 @@ public class ExchangeRateController(IGameProviderExchangeRateUtensil gameProvide
 	/// <param name="amount">The amount.</param>
 	/// <returns></returns>
 	[HttpGet("gameprovider/funds", Name = "ConvertGameProviderFunds")]
-	public ConvertGameProviderFundsResultViewModel ConvertGameProviderFunds(
+	public Common.ConvertGameProviderFundsResult ConvertGameProviderFunds(
 		[FromQuery] string gameProviderCode,
 		[FromQuery] string currencyCode,
 		[FromQuery] decimal amount)
 	{
 		var exchangeRate = gameProviderExchangeRateService.GetExchangeRates(gameProviderCode, currencyCode);
 
-		return new ConvertGameProviderFundsResultViewModel(
+		return new Common.ConvertGameProviderFundsResult(
 			ExchangeRate: exchangeRate,
 			Amount: gameProviderExchangeRateService.ConvertGameProviderFunds(exchangeRate, amount));
 	}
@@ -37,7 +36,7 @@ public class ExchangeRateController(IGameProviderExchangeRateUtensil gameProvide
 	/// <param name="outstandingBalance">The outstanding balance.</param>
 	/// <returns></returns>
 	[HttpGet("platform/balance", Name = "ConvertPlatformBalance")]
-	public ConvertPlatformBalanceResultViewModel ConvertPlatformBalance(
+	public Common.ConvertPlatformBalanceResult ConvertPlatformBalance(
 		[FromQuery] string gameProviderCode,
 		[FromQuery] string currencyCode,
 		[FromQuery] decimal balance,
@@ -46,7 +45,7 @@ public class ExchangeRateController(IGameProviderExchangeRateUtensil gameProvide
 	{
 		var exchangeRate = gameProviderExchangeRateService.GetExchangeRates(gameProviderCode, currencyCode);
 
-		return new ConvertPlatformBalanceResultViewModel(
+		return new Common.ConvertPlatformBalanceResult(
 			ExchangeRate: exchangeRate,
 			Balance: gameProviderExchangeRateService.ConvertPlatformBalance(exchangeRate, balance),
 			FreeBalance: gameProviderExchangeRateService.ConvertPlatformBalance(exchangeRate, freeBalance),
@@ -61,21 +60,22 @@ public class ExchangeRateController(IGameProviderExchangeRateUtensil gameProvide
 	/// <param name="model">The model.</param>
 	/// <returns></returns>
 	[HttpPost("platform/rounds", Name = "ConvertPlatformRounds")]
-	public ConvertPlatformRoundsResultViewModel ConvertPlatformRounds(
+	public Common.ConvertPlatformRoundsResult ConvertPlatformRounds(
 		[FromQuery] string gameProviderCode,
 		[FromQuery] string currencyCode,
-		[FromBody] ConvertPlatformRoundsRequestViewModel model)
+		[FromBody] ViewModels.ConvertPlatformRoundsViewModel model)
 	{
 		var exchangeRate = gameProviderExchangeRateService.GetExchangeRates(gameProviderCode, currencyCode);
 
-		return new ConvertPlatformRoundsResultViewModel(
+		return new Common.ConvertPlatformRoundsResult(
 			ExchangeRate: exchangeRate,
 			Bet: gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.Bet),
 			ValidBet: gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.ValidBet),
 			Settle: gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.Settle),
-			Commission: gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.Commission),
-			Turnover: gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.Turnover),
 			WinLoss: gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.WinLoss),
+			Turnover: gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.Turnover),
+			Commission: gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.Commission),
+			Contribute: gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.Contribute),
 			Jackpot: gameProviderExchangeRateService.ConvertPlatformRounds(exchangeRate, model.Jackpot));
 	}
 

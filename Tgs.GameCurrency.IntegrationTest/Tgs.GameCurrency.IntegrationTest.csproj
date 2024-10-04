@@ -27,6 +27,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Tgs.GameCurrency.Client\Tgs.GameCurrency.Client.csproj" />
+		<ProjectReference Include="..\Tgs.GameCurrency.Common\Tgs.GameCurrency.Common.csproj" />
 		<ProjectReference Include="..\Tgs.GameCurrency\Tgs.GameCurrency.csproj" />
 	</ItemGroup>
 

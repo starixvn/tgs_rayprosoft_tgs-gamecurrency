@@ -14,7 +14,7 @@ public partial class GameCurrencyClientUnitTest
 		var balance = 10m;
 		var freeBalance = 1m;
 		var outstandingBalance = 9m;
-		var expected = new ConvertPlatformBalanceResult(
+		var expected = new Common.ConvertPlatformBalanceResult(
 			ExchangeRate: 1,
 			Balance: balance,
 			FreeBalance: freeBalance,
@@ -45,7 +45,7 @@ public partial class GameCurrencyClientUnitTest
 		var balance = 10m;
 		var freeBalance = 1m;
 		var outstandingBalance = 9m;
-		var expected = new ConvertPlatformBalanceResult(
+		var expected = new Common.ConvertPlatformBalanceResult(
 			ExchangeRate: 1000,
 			Balance: 10000m,
 			FreeBalance: 1000m,
@@ -76,7 +76,7 @@ public partial class GameCurrencyClientUnitTest
 		var balance = 10m;
 		var freeBalance = 1m;
 		var outstandingBalance = 9m;
-		var expected = new ConvertPlatformBalanceResult(
+		var expected = new Common.ConvertPlatformBalanceResult(
 			ExchangeRate: 0.001m,
 			Balance: 0.01m,
 			FreeBalance: 0.001m,
