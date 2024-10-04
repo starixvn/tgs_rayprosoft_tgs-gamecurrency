@@ -8,7 +8,7 @@ using System.Web;
 
 namespace Tgs.GameCurrency.Client;
 
-internal class GameCurrencyClient : IGameCurrencyClient
+internal class GameCurrencyClient(HttpClient httpClient) : IGameCurrencyClient
 {
 	private static readonly JsonSerializerOptions _SerializerOptions = new()
 	{
@@ -32,12 +32,7 @@ internal class GameCurrencyClient : IGameCurrencyClient
 		}
 	};
 
-	private readonly HttpClient _httpClient;
-
-	public GameCurrencyClient(HttpClient httpClient)
-	  => _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-
-	public async ValueTask<ConvertGameProviderFundsResult> ConvertGameProviderFundsAsync(string gameProviderCode, string currencyCode, decimal amount, CancellationToken cancellationToken = default)
+	public async ValueTask<Common.ConvertGameProviderFundsResult> ConvertGameProviderFundsAsync(string gameProviderCode, string currencyCode, decimal amount, CancellationToken cancellationToken = default)
 	{
 		var query = HttpUtility.ParseQueryString(string.Empty);
 		query["gameProviderCode"] = gameProviderCode;
@@ -46,20 +41,19 @@ internal class GameCurrencyClient : IGameCurrencyClient
 
 		var requestUri = $"exchangerate/gameprovider/funds?{query}";
 
-		var response = await _httpClient
-			.GetAsync(
-			   requestUri: requestUri,
-			   cancellationToken: cancellationToken)
+		var response = await httpClient.GetAsync(
+			requestUri: requestUri,
+			cancellationToken: cancellationToken)
 		   .ConfigureAwait(false);
 
 		_ = response.EnsureSuccessStatusCode();
 
 		var contentJson = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-		return JsonSerializer.Deserialize<ConvertGameProviderFundsResult>(contentJson, _SerializerOptions)!;
+		return JsonSerializer.Deserialize<Common.ConvertGameProviderFundsResult>(contentJson, _SerializerOptions)!;
 	}
 
-	public async ValueTask<ConvertPlatformBalanceResult> ConvertPlatformBalanceAsync(string gameProviderCode, string currencyCode, decimal balance, decimal freeBalance, decimal outstandingBalance, CancellationToken cancellationToken = default)
+	public async ValueTask<Common.ConvertPlatformBalanceResult> ConvertPlatformBalanceAsync(string gameProviderCode, string currencyCode, decimal balance, decimal freeBalance, decimal outstandingBalance, CancellationToken cancellationToken = default)
 	{
 		var query = HttpUtility.ParseQueryString(string.Empty);
 		query["gameProviderCode"] = gameProviderCode;
@@ -70,20 +64,19 @@ internal class GameCurrencyClient : IGameCurrencyClient
 
 		var requestUri = $"exchangerate/platform/balance?{query}";
 
-		var response = await _httpClient
-			.GetAsync(
-			   requestUri: requestUri,
-			   cancellationToken: cancellationToken)
+		var response = await httpClient.GetAsync(
+			requestUri: requestUri,
+			cancellationToken: cancellationToken)
 		   .ConfigureAwait(false);
 
 		_ = response.EnsureSuccessStatusCode();
 
 		var contentJson = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-		return JsonSerializer.Deserialize<ConvertPlatformBalanceResult>(contentJson, _SerializerOptions)!;
+		return JsonSerializer.Deserialize<Common.ConvertPlatformBalanceResult>(contentJson, _SerializerOptions)!;
 	}
 
-	public async ValueTask<ConvertPlatformRoundsResult> ConvertPlatformRoundsAsync(string gameProviderCode, string currencyCode, decimal bet, decimal validBet, decimal settle, decimal commission, decimal turnover, decimal winLoss, decimal jackpot, CancellationToken cancellationToken = default)
+	public async ValueTask<Common.ConvertPlatformRoundsResult> ConvertPlatformRoundsAsync(string gameProviderCode, string currencyCode, decimal bet, decimal validBet, decimal settle, decimal winLoss, decimal turnover, decimal commission, decimal contribute, decimal jackpot, CancellationToken cancellationToken = default)
 	{
 		var query = HttpUtility.ParseQueryString(string.Empty);
 		query["gameProviderCode"] = gameProviderCode;
@@ -94,43 +87,40 @@ internal class GameCurrencyClient : IGameCurrencyClient
 			Bet = bet,
 			ValidBet = validBet,
 			Settle = settle,
-			Commission = commission,
-			Turnover = turnover,
 			WinLoss = winLoss,
-			Jackpot = jackpot
+			Turnover = turnover,
+			Commission = commission,
+			Contribute = contribute,
+			Jackpot = jackpot,
 		};
 
 		var requestUri = $"exchangerate/platform/rounds?{query}";
 
-		var requestContent = new StringContent(
-			content: JsonSerializer.Serialize(request, _SerializerOptions),
-			encoding: Encoding.UTF8,
-			mediaType: MediaTypeHeaderValue.Parse(MediaTypeNames.Application.Json!)!.MediaType!);
+		var requestContent = JsonContent.Create(request, options: _SerializerOptions);
 
-		var response = await _httpClient
-			.PostAsync(
-			   requestUri: requestUri,
-			   content: requestContent,
-			   cancellationToken: cancellationToken)
-		   .ConfigureAwait(false);
+		var response = await httpClient.PostAsync(
+			requestUri: requestUri,
+			content: requestContent,
+			cancellationToken: cancellationToken)
+			.ConfigureAwait(false);
 
 		_ = response.EnsureSuccessStatusCode();
 
 		var contentJson = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-		return JsonSerializer.Deserialize<ConvertPlatformRoundsResult>(contentJson, _SerializerOptions)!;
+		return JsonSerializer.Deserialize<Common.ConvertPlatformRoundsResult>(contentJson, _SerializerOptions)!;
 	}
 
 	public async ValueTask<decimal> GetExchangeRate(string gameProviderCode, string currencyCode, CancellationToken cancellationToken = default)
 	{
-		var path = new Uri(_httpClient.BaseAddress!, $"/exchangerate/{gameProviderCode}/{currencyCode}");
+		var path = new Uri(httpClient.BaseAddress!, $"/exchangerate/{gameProviderCode}/{currencyCode}");
 		var builder = new UriBuilder(path);
 		var query = HttpUtility.ParseQueryString(builder.Query);
 
 		builder.Query = query.ToString();
 		string url = builder.ToString();
 
-		var response = await _httpClient.GetAsync(
+		var response = await httpClient.GetAsync(
 			requestUri: url.ToString(),
 			cancellationToken: cancellationToken)
 			.ConfigureAwait(false);

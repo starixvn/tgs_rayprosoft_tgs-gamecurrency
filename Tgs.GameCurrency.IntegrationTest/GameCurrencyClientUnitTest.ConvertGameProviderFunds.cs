@@ -12,7 +12,7 @@ public partial class GameCurrencyClientUnitTest
 		var gameProviderCode = "AWC_PGS";
 		var currencyCode = "CNY";
 		var amount = 1m;
-		var expected = new ConvertGameProviderFundsResult(
+		var expected = new Common.ConvertGameProviderFundsResult(
 			ExchangeRate: 1,
 			Amount: 1m);
 
@@ -37,7 +37,7 @@ public partial class GameCurrencyClientUnitTest
 		var gameProviderCode = "AWC_PGS";
 		var currencyCode = "IDR";
 		var amount = 0.01m;
-		var expected = new ConvertGameProviderFundsResult(
+		var expected = new Common.ConvertGameProviderFundsResult(
 			ExchangeRate: 1000,
 			Amount: 0.00001m);
 
@@ -62,7 +62,7 @@ public partial class GameCurrencyClientUnitTest
 		var gameProviderCode = "AWC_PGS";
 		var currencyCode = "IDR";
 		var amount = 1m;
-		var expected = new ConvertGameProviderFundsResult(
+		var expected = new Common.ConvertGameProviderFundsResult(
 			ExchangeRate: 1000,
 			Amount: 0.001m);
 
@@ -87,7 +87,7 @@ public partial class GameCurrencyClientUnitTest
 		var gameProviderCode = "AWC_PGS";
 		var currencyCode = "IDR_1000";
 		var amount = 0.01m;
-		var expected = new ConvertGameProviderFundsResult(
+		var expected = new Common.ConvertGameProviderFundsResult(
 			ExchangeRate: 0.001m,
 			Amount: 10m);
 
@@ -112,7 +112,7 @@ public partial class GameCurrencyClientUnitTest
 		var gameProviderCode = "AWC_PGS";
 		var currencyCode = "IDR_1000";
 		var amount = 1;
-		var expected = new ConvertGameProviderFundsResult(
+		var expected = new Common.ConvertGameProviderFundsResult(
 			ExchangeRate: 0.001m,
 			Amount: 1000m);
 
